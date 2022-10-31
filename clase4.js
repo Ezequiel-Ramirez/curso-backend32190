@@ -15,24 +15,34 @@ class Contenedor {
     }
     async save(product) {
         try {
-            const products = await this.getAll()
-            const id = products.length + 1
-            const newProduct = { ...product, id }
+            const data = await fs.promises.readFile(this.file, 'utf-8')
+            const products = JSON.parse(data)
+            //busco el ultimo id para generar un nuevo id sumandole 1
+            const lastId = products[products.length - 1].id
+            const newProduct = { ...product, id: lastId + 1 }
             products.push(newProduct)
             await fs.promises.writeFile(this.file, JSON.stringify(products, null, 2))
-            console.log('id generado', id)
+            console.log('Se creo nuevo producto con id:' + newProduct.id)
         } catch (error) {
-            console.log('Error en save: ', error)
+            //si no existe el archivo, creamos por primera vez la lista de productos
+            const newProduct = { ...product, id: 1 }
+            await fs.promises.writeFile(this.file, JSON.stringify([newProduct], null, 2))
+            console.log('Se creo nuevo producto con id:' + newProduct.id)
         }
     }
+
 
     async getById(id) {
         try {
             const products = await this.getAll()
             const product = products.find((product) => product.id === id)
-            return product
+            if (!product) {
+                console.log('null')
+            } else {
+                console.log('Producto con id', id, product)
+            }
         } catch (error) {
-            console.log('Error en getById: ', error)
+            throw new Error('No fue encontrado un producto con ese id')
         }
     }
 
@@ -40,6 +50,12 @@ class Contenedor {
     async deleteById(id) {
         try {
             const products = await this.getAll()
+            //verifico si existe ese id sino mando error
+            const product = products.find((product) => product.id === id)
+            if (!product) {
+                throw new Error('No fue encontrado un producto con ese id')
+            }
+            //filtro el array de productos y me quedo con los que no tengan el id que quiero eliminar
             const newProducts = products.filter((product) => product.id !== id)
             await fs.promises.writeFile(this.file, JSON.stringify(newProducts, null, 2))
         } catch (error) {
@@ -54,18 +70,9 @@ class Contenedor {
             console.log('Error en deleteAll: ', error)
         }
     }
-
-
 }
 
 const main = async () => {
-    //verificar si existe el archivo productos.txt sino crearlo
-    try {
-        await fs.promises.access('productos.txt')
-    } catch (error) {
-        await fs.promises.writeFile('productos.txt', JSON.stringify([], null, 2))
-    }
-    
     const contenedor = new Contenedor('productos.txt')
     await contenedor.save({
         title: 'Escuadra',
@@ -82,17 +89,14 @@ const main = async () => {
         price: 345.67,
         thumbnail: 'https://cdn3.iconfinder.com/data/icons/education-209/64/globe-earth-geograhy-planet-school-256.png'
     })
-    console.log('array de objetos', await contenedor.getAll())
-    const id = 2
-    const product = await contenedor.getById(id)
-    console.log('Producto con id', id, product)
-    await contenedor.deleteById(id)
-    const products = await contenedor.getAll()
-    console.log('Productos luego de eliminar uno', products)
-    await contenedor.deleteAll()
-    console.log('mostrar contenedor luego de eliminar', await contenedor.getAll())
-}
 
+    const id = 3
+    await contenedor.getById(id)
+    const products = await contenedor.getAll()
+    console.log('array de objetos', products)
+    await contenedor.deleteById(2)
+    await contenedor.deleteAll()
+}
 
 main()
 
