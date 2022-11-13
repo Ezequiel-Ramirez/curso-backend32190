@@ -1,0 +1,44 @@
+[
+  {
+    "title": "sdf",
+    "price": "300",
+    "thumbnail": "https:/imagen.jps",
+    "id": 1
+  },
+  {
+    "title": "lechuga",
+    "price": "350",
+    "thumbnail": "https:/imagen.jps",
+    "id": 2
+  },
+  {
+    "title": "banana",
+    "price": "400",
+    "thumbnail": "https:/imagen.jps",
+    "id": 3
+  },
+  {
+    "title": "pera",
+    "price": "100",
+    "thumbnail": "https:/imagen.jps",
+    "id": 4
+  },
+  {
+    "title": "manzana",
+    "price": "200",
+    "thumbnail": "https:/imagen.jps",
+    "id": 5
+  },
+  {
+    "title": "zanahoria",
+    "price": "500",
+    "thumbnail": "https:/imagen.png",
+    "id": 6
+  },
+  {
+    "title": "pomelo",
+    "price": "600",
+    "thumbnail": "https:/imagen.jps",
+    "id": 7
+  }
+]
