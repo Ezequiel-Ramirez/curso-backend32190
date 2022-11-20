@@ -1,0 +1,39 @@
+extends inicio
+
+block formulario 
+    .container
+        .row
+            .col-12
+                h1 Ingreso de Datos
+                form(action="/productos", method="POST")
+                    .form-group
+                        label(for="nombre") Nombre
+                        input#nombre.form-control(type="text", name="nombre", placeholder="Ingrese el nombre")
+                    .form-group
+                        label(for="precio") Precio
+                        input#apellido.form-control(type="number", name="precio", placeholder="Ingrese su precio")
+                    .form-group
+                        label(for="imagen") Imagen
+                        input#edad.form-control(type="text", name="imagen", placeholder="Ingrese imagen")
+                    .form-group
+                        button.btn.btn-primary(type="submit") Enviar     
+
+    .container
+        .row
+            .col-12
+                h2 Historial
+
+        if productos.length > 0
+            div.table-responsive
+                table.table.table-dark
+                    tr
+                        th Nombre
+                        th Precio
+                        th Imagen
+                    each producto in productos
+                        tr
+                            td= producto.nombre
+                            td= producto.precio
+                            td= producto.imagen
+        else
+            h3 No hay productos                 

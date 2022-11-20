@@ -1,0 +1,23 @@
+extends inicio
+
+block historial 
+    .container
+        .row
+            .col-12
+                h2 Historialllllll
+
+        if productos.length > 0
+            div.table-responsive
+                table.table.table-dark
+                    tr
+                        th Nombre
+                        th Precio
+                        th Imagen
+                    each producto in productos
+                        tr
+                            td= producto.nombre
+                            td= producto.precio
+                            td= producto.imagen
+        else
+            h3 No hay productos
+
