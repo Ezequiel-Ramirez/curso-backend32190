@@ -4,7 +4,7 @@ block historial
     .container
         .row
             .col-12
-                h2 Historialllllll
+                h2 Historial
 
         if productos.length > 0
             div.table-responsive
@@ -18,6 +18,14 @@ block historial
                             td= producto.nombre
                             td= producto.precio
                             td= producto.imagen
+
+                            .container
+            .row
+                .col-12
+                    button.btn.btn-info(type="button" onclick="location.href='/'") volver
         else
             h3 No hay productos
+            .row
+            .col-12
+                button.btn.btn-info(type="button" onclick="location.href='/'") volver
 

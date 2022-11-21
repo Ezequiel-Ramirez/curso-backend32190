@@ -34,7 +34,10 @@ app.post('/productos', (req, res) => {
     res.redirect('/productos')
 })
 
-app.listen(8080)
+// listen
+const server = app.listen(8080, () => {
+    console.log(`Servidor escuchando en el puerto ${server.address().port}`)
+})
 
 
 
