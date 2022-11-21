@@ -1,0 +1,17 @@
+{{#if listExist}}
+    <div class="table-responsive">
+        <table class="table table-dark">
+            <tr style="color: yellow;"> <th>Nombre</th> <th>Precio</th> <th>Imagen</th> </tr>
+            {{#each productos}}
+            <tr>
+                <td>{{this.nombre}}</td>
+                <td>{{this.precio}}</td>
+                <td>{{this.imagen}}</td>
+            </tr>
+            {{/each}}
+        </table>
+    </div>
+{{else}}
+    <h3 class="alert alert-danger">No hay productos</h3>
+{{/if}}
+
