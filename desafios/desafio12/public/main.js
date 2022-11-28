@@ -27,9 +27,9 @@ function addMessage() {
 
 socket.on('products', (data) => {
     const html = data.map(product => {
-        return `<tr><td>${product.title}</td>
-        <td>${product.price}</td>
-        <td>${product.thumbnail}</td></tr>`
+        return `<div class="col-4 mb-2" >${product.title}</div>
+        <div class="col-4" >${product.price}</div>
+        <div class="col-4" >${product.thumbnail}</div>`
     })
         .join("<br>")
 

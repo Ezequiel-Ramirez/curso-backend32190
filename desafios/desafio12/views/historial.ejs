@@ -1,18 +1,16 @@
-<h2 style="color:crimson;">Historial</h2>
+<h2 style="color: crimson">Historial</h2>
 
-<% if(productosArray.length > 0){ %>
-    <div class="table-responsive">
-        <table class="table table-dark">
-            <tr style="color: blue;"> <th>Nombre</th> <th>Precio</th> <th>Imagen</th> </tr>
-           
-            <div id="products">
-
-            </div>
-           
-        </table>
+<% if(productos.length > 0){ %>
+<div class="col-12">
+    <div class="table table-dark">
+        <div class="row" style="border-bottom: 1px solid white">
+            <div class="col-4" style="color: blue; font-size: 20px">Nombre</div>
+            <div class="col-4" style="color: blue; font-size: 20px">Precio</div>
+            <div class="col-4" style="color: blue; font-size: 20px">Imagen</div>
+        </div>
+        <div class="row" id="products"></div>
     </div>
+</div>
 <% } else{ %>
-    <h3 class="alert alert-danger">No hay productos</h3>
+<h3 class="alert alert-danger">No hay productos</h3>
 <% } %>
-
-

@@ -1,12 +1,31 @@
 [
   {
-    "title": "Ezequiel",
-    "price": "",
-    "thumbnail": "https://imagen.jpg"
+    "title": "Pantalon",
+    "price": 4500,
+    "thumbnail": "https://cdn3.iconfinder.com/data/icons/fashion-beauty-vol-1/512/trousers_pants_tactical_cargo-64.png",
+    "id": 1
   },
   {
-    "title": "Ezequielfffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
-    "price": "",
+    "title": "Camiseta",
+    "price": 5000,
+    "thumbnail": "https://cdn2.iconfinder.com/data/icons/line-color-mix-vol-4-1/128/line-24-64.png",
+    "id": 2
+  },
+  {
+    "title": "Posillo",
+    "price": 3000,
+    "thumbnail": "https://cdn2.iconfinder.com/data/icons/coffee-shop-4/128/yumminky-coffee-40-64.png",
+    "id": 3
+  },
+  {
+    "title": "Martillo",
+    "price": 12300,
+    "thumbnail": "https://cdn4.iconfinder.com/data/icons/set-1/32/__29__7-64.png",
+    "id": 4
+  },
+  {
+    "title": "Pelota",
+    "price": "100",
     "thumbnail": "https://imagen.jpg"
   }
 ]

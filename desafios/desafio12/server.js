@@ -15,9 +15,7 @@ app.use(express.json())
 
 app.set('view engine', 'ejs')
 
-
-const productosArray = []
-const mensajesArray = []
+let productosArray = []
 //contenedor
 class Contenedor {
     constructor(file) {
@@ -53,15 +51,10 @@ const contenedorMensajes = new Contenedor('./mensajes.txt')
 // get
 
 app.get('/', (req, res) => {
-    res.render('inicio', { productosArray })
-})
-
-
-// post
-
-app.post('/productos', (req, res) => {
-    productosArray.push(req.body)
-    res.redirect('/')
+    //obtengo los productos del archivo para enviarlos
+    contenedorProductos.getAll().then((data) => {
+        res.render('inicio', { productos: data })
+    })
 })
 
 // socket
@@ -79,15 +72,16 @@ io.on('connection', async socket => {
 
     socket.emit('products', await contenedorProductos.getAll())
     socket.on('new-product', async data => {
+
         await contenedorProductos.save(data)
 
-        io.sockets.emit('products', await contenedorProductos.getAll())
+        const productos = await contenedorProductos.getAll()
+
+        io.sockets.emit('products', productos)
     }
     )
-    
+
 })
-
-
 
 
 // listen
