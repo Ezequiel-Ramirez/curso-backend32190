@@ -1,0 +1,12 @@
+[
+  {
+    "title": "Ezequiel",
+    "price": "",
+    "thumbnail": "https://imagen.jpg"
+  },
+  {
+    "title": "Ezequielfffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "price": "",
+    "thumbnail": "https://imagen.jpg"
+  }
+]
