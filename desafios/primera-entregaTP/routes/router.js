@@ -1,10 +1,5 @@
-const express = require('express');
-const { Router } = express
-
-const app = express();
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static('public'));
+import express from "express";
+import { Router } from "express";
 
 const routerProductos = new Router();
 const routerCarrito = new Router();

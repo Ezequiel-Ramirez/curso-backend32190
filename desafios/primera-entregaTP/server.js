@@ -1,8 +1,8 @@
-const express = require('express');
-const fs = require('fs');
-const Contenedor = require('./persistencia/contenedor.js')
-const ContenedorCarrito = require('./persistencia/contenedorCarrito.js')
-const { Router } = express
+import express from "express";
+import { Router } from "express";
+import Contenedor from "./persistencia/Contenedor.js";
+import ContenedorCarrito from "./persistencia/ContenedorCarrito.js";
+
 
 const app = express();
 app.use(express.json());
@@ -107,17 +107,6 @@ routerCarrito.delete('/:id/productos/:id_prod', async (req, res) => {
     const producto = await persistenciaCarrito.deleteProductoCarrito(Number(id), Number(id_prod))
     res.json(producto)
 })
-
-
-
-
-
-
-
-
-
-
-
 
 
 //server
