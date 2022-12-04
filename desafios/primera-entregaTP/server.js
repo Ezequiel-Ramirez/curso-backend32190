@@ -39,34 +39,34 @@ routerProductos.get('/:id?', async (req, res) => {
 
 routerProductos.post('/', async (req, res) => {
     if (admin) {
-    const product = req.body
-    const newProduct = await persistenciaProductos.save(product)
-    res.json(newProduct)
+        const product = req.body
+        const newProduct = await persistenciaProductos.save(product)
+        res.json(newProduct)
     } else {
-        res.json({ error : -1, descripcion: 'ruta /api/productos método POST no autorizada' })
+        res.json({ error: -1, descripcion: 'ruta /api/productos método POST no autorizada' })
     }
 })
 
 //PUT: '/:id' - Actualiza un producto por su id (disponible para administradores)
 routerProductos.put('/:id', async (req, res) => {
     if (admin) {
-    const { id } = req.params
-    const product = req.body
-    const newProduct = await persistenciaProductos.updateById(Number(id), product)
-    res.json(newProduct)
+        const { id } = req.params
+        const product = req.body
+        const newProduct = await persistenciaProductos.updateById(Number(id), product)
+        res.json(newProduct)
     } else {
-        res.json({ error : -1, descripcion: 'ruta /api/productos método PUT no autorizada' })
+        res.json({ error: -1, descripcion: 'ruta /api/productos método PUT no autorizada' })
     }
 })
 
 //DELETE: '/:id' - Borra un producto por su id (disponible para administradores)
 routerProductos.delete('/:id', async (req, res) => {
     if (admin) {
-    const { id } = req.params
-    const product = await persistenciaProductos.deleteById(Number(id))
-    res.json(product)
+        const { id } = req.params
+        const product = await persistenciaProductos.deleteById(Number(id))
+        res.json(product)
     } else {
-        res.json({ error : -1, descripcion: 'ruta /api/productos método DELETE no autorizada' })
+        res.json({ error: -1, descripcion: 'ruta /api/productos método DELETE no autorizada' })
     }
 })
 
