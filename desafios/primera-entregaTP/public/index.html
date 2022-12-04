@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Primer entrega - TP</title>
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+            integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
+            crossorigin="anonymous"
+        />
+    </head>
+    <body>
+        <!--  <form action="/api/productos" method="post">
+            <label for="nombre">Nombre: </label>
+            <input type="text" id="nombre" name="nombre" /><br /><br />
+            <label for="price">Precio: </label>
+            <input type="text" id="price" name="price" /><br /><br />
+            <label for="foto">Foto: </label>
+            <input type="text" id="foto" name="foto" /><br /><br />
+            <label for="descripcion">Descripción: </label>
+            <input type="text" id="descripcion" name="descripcion" /><br /><br />
+            <label for="codigo">Código: </label>
+            <input type="text" id="codigo" name="codigo" /><br /><br />
+            <label for="stock">Stock: </label>
+            <input type="text" id="stock" name="stock" /><br /><br />
+            <input type="submit" value="Submit" />
+        </form> -->
+        <div class="container mt-3">
+            <div class="jumbotron">
+                <h1 style="color: blue">Ingrese su producto:</h1>
+                <br />
+
+                <form action="/productos" method="post">
+                    <div class="form-group">
+                        <label for="nombre"><b>Nombre</b></label>
+                        <input
+                            id="nombre"
+                            class="form-control"
+                            type="text"
+                            name="nombre"
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="precio"><b>Precio</b></label>
+                        <input
+                            id="precio"
+                            class="form-control"
+                            type="number"
+                            name="precio"
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="foto"><b>Foto</b></label>
+                        <input
+                            id="foto"
+                            class="form-control"
+                            type="text"
+                            name="foto"
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="descripcion"><b>Descripción</b></label>
+                        <input
+                            id="descripcion"
+                            class="form-control"
+                            type="text"
+                            name="descripcion"
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="codigo"><b>Código</b></label>
+                        <input
+                            id="codigo"
+                            class="form-control"
+                            type="number"
+                            name="codigo"
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="stock"><b>Stock</b></label>
+                        <input
+                            id="stock"
+                            class="form-control"
+                            type="number"
+                            name="stock"
+                        />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        Enviar
+                    </button>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

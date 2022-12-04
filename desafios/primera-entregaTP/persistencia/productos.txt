@@ -1,0 +1,80 @@
+[
+  {
+    "nombre": "zanahoria",
+    "price": "200",
+    "foto": "imagen1",
+    "descripcion": "Zana",
+    "codigo": "124",
+    "stock": "10",
+    "id": 1
+  },
+  {
+    "nombre": "papa",
+    "price": "100",
+    "foto": "imagen1",
+    "descripcion": "papa negra",
+    "codigo": "123",
+    "stock": "10",
+    "id": 2
+  },
+  {
+    "nombre": "lechuga",
+    "price": "300",
+    "foto": "imagen1",
+    "descripcion": "manteca",
+    "codigo": "125",
+    "stock": "10",
+    "id": 3,
+    "timestamp": 1670156636894
+  },
+  {
+    "nombre": "lechuga",
+    "price": "300",
+    "foto": "imagen1",
+    "descripcion": "manteca",
+    "codigo": "125",
+    "stock": "20",
+    "id": 5,
+    "timestamp": "1.670.156.702.163"
+  },
+  {
+    "nombre": "lechuga",
+    "price": "300",
+    "foto": "imagen1",
+    "descripcion": "manteca",
+    "codigo": "125",
+    "stock": "10",
+    "id": 6,
+    "timestamp": "4/12/2022 09:26:45"
+  },
+  {
+    "nombre": "tomate",
+    "price": "300",
+    "foto": "imagen1",
+    "descripcion": "manteca",
+    "codigo": "125",
+    "stock": "10",
+    "id": 7,
+    "timestamp": "4/12/2022 09:34:14"
+  },
+  {
+    "nombre": "tomate",
+    "price": "300",
+    "foto": "imagen1",
+    "descripcion": "manteca",
+    "codigo": "125",
+    "stock": "10",
+    "id": 8,
+    "timestamp": "4/12/2022 09:34:39"
+  },
+  {
+    "nombre": "Ezequiel",
+    "precio": "123",
+    "foto": "imagen1",
+    "descripcion": "Zana",
+    "codigo": "126",
+    "stock": "10",
+    "id": 9,
+    "timestamp": "4/12/2022 09:44:03"
+  }
+]
