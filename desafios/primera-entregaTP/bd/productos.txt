@@ -96,5 +96,25 @@
     "stock": "",
     "id": 11,
     "timestamp": "5/12/2022 19:49:35"
+  },
+  {
+    "nombre": "",
+    "precio": "",
+    "foto": "",
+    "descripcion": "",
+    "codigo": "",
+    "stock": "",
+    "id": 12,
+    "timestamp": "5/12/2022 20:08:01"
+  },
+  {
+    "nombre": "",
+    "precio": "",
+    "foto": "",
+    "descripcion": "",
+    "codigo": "",
+    "stock": "",
+    "id": 13,
+    "timestamp": "5/12/2022 20:08:17"
   }
 ]

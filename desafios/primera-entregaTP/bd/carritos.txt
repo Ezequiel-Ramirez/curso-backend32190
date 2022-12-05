@@ -85,6 +85,16 @@
         "stock": "10",
         "id": 4,
         "timestamp": 1670156636894
+      },
+      {
+        "nombre": "papa blanca",
+        "price": "500",
+        "foto": "imagen1",
+        "descripcion": "manteca",
+        "codigo": "125",
+        "stock": "10",
+        "id": 4,
+        "timestamp": 1670156636894
       }
     ]
   }

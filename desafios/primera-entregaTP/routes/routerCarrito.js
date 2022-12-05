@@ -4,9 +4,7 @@ const ContenedorCarrito = require('../persistencia/ContenedorCarrito.js')
 
 const routerCarrito = new Router();
 
-const persistenciaCarrito = new ContenedorCarrito('./persistencia/carritos.txt');
-
-let admin = true;
+const persistenciaCarrito = new ContenedorCarrito('./bd/carritos.txt');
 
 //rutas carrito
 
