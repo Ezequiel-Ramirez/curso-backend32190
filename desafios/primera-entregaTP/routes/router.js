@@ -1,5 +1,5 @@
-import express from "express";
-import { Router } from "express";
+const express = require('express');
+const { Router } = express
 
 const routerProductos = new Router();
 const routerCarrito = new Router();

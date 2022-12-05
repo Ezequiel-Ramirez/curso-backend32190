@@ -1,4 +1,4 @@
-import fs from "fs";
+const fs = require('fs');
 
 //contendor
 class Contenedor {
@@ -98,4 +98,4 @@ class Contenedor {
 }
 
 //exporto
-export default Contenedor;
+module.exports = Contenedor

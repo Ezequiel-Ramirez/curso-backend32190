@@ -1,7 +1,7 @@
-import express from "express";
-import { Router } from "express";
-import Contenedor from "./persistencia/Contenedor.js";
-import ContenedorCarrito from "./persistencia/ContenedorCarrito.js";
+const express = require('express')
+const { Router } = express
+const Contenedor = require('./persistencia/Contenedor.js')
+const ContenedorCarrito = require("./persistencia/ContenedorCarrito.js")
 
 
 const app = express();

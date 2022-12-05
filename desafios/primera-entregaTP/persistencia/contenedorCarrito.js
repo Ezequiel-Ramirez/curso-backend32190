@@ -1,4 +1,4 @@
-import fs from "fs";
+const fs = require('fs');
 
 //contendor
 class ContenedorCarrito {
@@ -108,7 +108,7 @@ class ContenedorCarrito {
     }
 }
 
-export default ContenedorCarrito
+module.exports = ContenedorCarrito
 
 
 
