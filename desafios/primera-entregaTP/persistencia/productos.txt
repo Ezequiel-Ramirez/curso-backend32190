@@ -86,5 +86,15 @@
     "stock": "",
     "id": 10,
     "timestamp": "5/12/2022 19:34:12"
+  },
+  {
+    "nombre": "lechuga",
+    "precio": "5555",
+    "foto": "",
+    "descripcion": "",
+    "codigo": "",
+    "stock": "",
+    "id": 11,
+    "timestamp": "5/12/2022 19:49:35"
   }
 ]

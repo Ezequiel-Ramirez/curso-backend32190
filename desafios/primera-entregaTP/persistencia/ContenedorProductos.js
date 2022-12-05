@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 //contendor
-class Contenedor {
+class ContenedorProductos {
     constructor(file) {
         this.file = file
     }
@@ -98,4 +98,4 @@ class Contenedor {
 }
 
 //exporto
-module.exports = Contenedor
+module.exports = ContenedorProductos
