@@ -7,8 +7,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
-app.use('/productos', routerProductos)
-app.use('/carrito', routerCarrito)
+app.use('/api/productos', routerProductos)
+app.use('/api/carrito', routerCarrito)
 
 //server
 const PORT = process.env.PORT || 8080;
