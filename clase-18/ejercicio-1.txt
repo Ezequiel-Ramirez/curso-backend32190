@@ -1,36 +1,37 @@
-1- 
+1- Crear una base de datos en MongoDB llamada 'empresa'.
 
 use empresa
 
-2-
+2-Crear una colección llamada 'clientes' dentro de esa base.
 
 db.createCollection('clientes')
 
-3-
+3-Insertar un documento en la colección clientes que contenga los campos ‘nombre’ y ‘edad’.
 
 db.clientes.insertOne({nombre: "Alan", edad:23})
 
-4-
+4-Insertar un array de tres documentos con el mismo formato y valores distintos en la colección clientes (modo bulk).
 
 db.clientes.insertMany([{nombre:'Messi', edad:35},{nombre:'Di maria', edad:34},{nombre:'Alvarez', edad:22}])
 
-5-
+5-Utilizando un sólo comando, crear una colección llamada 'articulos' e insertar dentro de ella un array de cuatro documentos con los campos ‘nombre’, ‘precio’ y ‘stock’.
 
 db.articulos.insertMany([{nombre: 'Pantalones', precio: 100, stock: 3}, {nombre: 'Camisas', precio: 50, stock: 6}, {nombre: 'Zapatos', precio: 200, stock: 1}])
 
-6-
+6-Mostrar las colecciones de la base 'empresa'.
 
 show collections
 
-7-
+7-Listar todos los documentos dentro de cada una de las colecciones.
+
 
 db.articulos.find()
 
-8-
+8-Tomar el Object ID de uno de los documentos y comprobar fecha y hora de creación.
 
 639a6628b5c6ead47c84d9f1
 
-9-
+9-Mostrar la cantidad de documentos que tiene la colección articulos.
 
 db.articulos.estimatedDocumentCount()
 db.articulos.countDocuments()

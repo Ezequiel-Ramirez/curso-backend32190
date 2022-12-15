@@ -1,0 +1,92 @@
+CRUD CON MONGODB Y NODEJS
+
+*Creo servidor de base de datos en carpeta db-18
+md db-18
+mongod --dbpath db-18
+
+*Me conecto a la base de datos
+mongosh
+
+*- Creo la base de datos llamada "ecommerce"
+use ecommerce
+
+*- Creo la colección llamada "productos" y "mensajes"
+db.createCollection("productos")
+db.createCollection("mensajes")
+
+1- Agregar 10 documentos con valores distintos a las colecciones mensajes y productos. El formato de los documentos debe estar en correspondencia con el que venimos utilizando en el entregable con la base de datos MariaDB.(productos: title, price, thumbnail), (mensajes: author, text, date). Definir las claves de los documentos en relación a los campos de las tablas de esa base. En el caso de los productos, poner valores al campo precio entre los 100 y 5000 pesos(eligiendo valores intermedios, ej: 120, 580, 900, 1280, 1700, 2300, 2860, 3350, 4320, 4990).
+
+*- Agrego 10 documentos a la colección productos
+db.productos.insertMany([{title: "Producto 1", price: 120, thumbnail: "https://cdn3.iconfinder.com/data/icons/education-209/64/globe-earth-geograhy-planet-school-256.png"},{title: "Producto 2", price: 580, thumbnail: "https://cdn3.iconfinder.com/data/icons/education-209/64/globe-earth-geograhy-planet-school-256.png"},{title: "Producto 3", price: 900, thumbnail: "https://cdn3.iconfinder.com/data/icons/education-209/64/globe-earth-geograhy-planet-school-256.png"},{title: "Producto 4", price: 1280, thumbnail: "https://cdn3.iconfinder.com/data/icons/education-209/64/globe-earth-geograhy-planet-school-256.png"},{title: "Producto 5", price: 1700, thumbnail: "https://cdn3.iconfinder.com/data/icons/education-209/64/globe-earth-geograhy-planet-school-256.png"},{title: "Producto 6", price: 2300, thumbnail: "https://cdn3.iconfinder.com/data/icons/education-209/64/globe-earth-geograhy-planet-school-256.png"},{title: "Producto 7", price: 2860, thumbnail: "https://cdn3.iconfinder.com/data/icons/education-209/64/globe-earth-geograhy-planet-school-256.png"},{title: "Producto 8", price: 3350, thumbnail: "https://cdn3.iconfinder.com/data/icons/education-209/64/globe-earth-geograhy-planet-school-256.png"},{title: "Producto 9", price: 4320, thumbnail: "https://cdn3.iconfinder.com/data/icons/education-209/64/globe-earth-geograhy-planet-school-256.png"},{title: "Producto 10", price: 4990, thumbnail: "https://cdn3.iconfinder.com/data/icons/education-209/64/globe-earth-geograhy-planet-school-256.png"}])
+
+*- Agrego 10 documentos a la colección mensajes
+db.mensajes.insertMany([{author: "Autor 1", text: "Mensaje 1", date: "2021-09-01"},{author: "Autor 2", text: "Mensaje 2", date: "2021-09-02"},{author: "Autor 3", text: "Mensaje 3", date: "2021-09-03"},{author: "Autor 4", text: "Mensaje 4", date: "2021-09-04"},{author: "Autor 5", text: "Mensaje 5", date: "2021-09-05"},{author: "Autor 6", text: "Mensaje 6", date: "2021-09-06"},{author: "Autor 7", text: "Mensaje 7", date: "2021-09-07"},{author: "Autor 8", text: "Mensaje 8", date: "2021-09-08"},{author: "Autor 9", text: "Mensaje 9", date: "2021-09-09"},{author: "Autor 10", text: "Mensaje 10", date: "2021-09-10"}])
+
+3- Listar todos los documentos en cada colección.
+*- Listo todos los documentos de la colección productos
+db.productos.find()
+*- Listo todos los documentos de la colección mensajes
+db.mensajes.find()
+
+4- Mostrar la cantidad de documentos almacenados en cada una de ellas.
+*- Muestro la cantidad de documentos de la colección productos
+db.productos.countDocuments()
+*- Muestro la cantidad de documentos de la colección mensajes
+db.mensajes.countDocuments()
+
+5- Realizar un CRUD sobre la colección de productos:
+a) Agregar un producto más en la colección de productos.
+db.productos.insertOne({title: "Producto 11", price: 5000, thumbnail: "https://cdn3.iconfinder.com/data/icons/education-209/64/globe-earth-geograhy-planet-school-256.png"})
+
+b-1) Listar los productos con precio menor a 1000 pesos.
+db.productos.find({price: {$lt: 1000}})
+
+b-2) Listar los productos con precio entre los 1000 y 3000 pesos.
+db.productos.find({price: {$gt: 1000, $lt: 3000}})
+
+b-3) Listar los productos con precio mayor a 3000 pesos.
+db.productos.find({price: {$gt: 3000}})
+
+b-4) Realizar una consulta que traiga sólo el nombre del tercer producto más barato.
+db.productos.find({},{title: 1}).sort({price: 1}).limit(1).skip(2)
+
+c) Hacer una actualización sobre todos los productos, agregando un campo stock con valor 100.
+db.productos.updateMany({}, {$set: {stock: 100}})
+*- Verifico que se haya agregado el campo stock a todos los documentos
+db.productos.find()
+
+d) Cambiar el stock a cero de los productos son precios mayores a 4000 pesos.
+db.productos.updateMany({price: {$gt: 4000}}, {$set: {stock: 0}})
+*- Verifico que se haya cambiado el stock a cero de los productos con precio mayor a 4000
+db.productos.find({price: {$gt: 4000}})
+*- Verifico que no se haya cambiado el stock de los productos con precio menor a 4000
+db.productos.find({price: {$lt: 4000}})
+*- Verifico que no se haya cambiado el stock de los productos con precio igual a 4000
+db.productos.find({price: 4000})
+
+e) Borrar los productos con precio menor a 1000 pesos.
+db.productos.deleteMany({price: {$lt: 1000}})
+*- Verifico que se hayan borrado los productos con precio menor a 1000
+db.productos.find()
+
+6- Crear un usuario 'pepe' clave: 'asd456' que sólo pueda leer la base de datos ecommerce. Verificar que pepe no pueda cambiar la información.
+*- Creo el usuario pepe
+use admin
+
+db.createUser({user: "pepe", pwd: "asd456", roles: [{role: "read", db: "ecommerce"}]})
+
+*- Verifico que el usuario pepe no pueda cambiar la información
+use ecommerce
+
+db.productos.insertOne({title: "Producto 12", price: 5000, thumbnail: "https://cdn3.iconfinder.com/data/icons/education-209/64/globe-earth-geograhy-planet-school-256.png"})
+db.productos.updateMany({}, {$set: {stock: 100}})
+db.productos.deleteMany({price: {$lt: 1000}})
+db.productos.find()
+
+
+
+
+
+
+
+
