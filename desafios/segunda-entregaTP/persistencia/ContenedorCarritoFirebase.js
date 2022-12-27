@@ -110,4 +110,4 @@ class ContenedorCarritoFirebase {
     }
 }
 
-module.exports = new ContenedorCarritoFirebase();
+module.exports = ContenedorCarritoFirebase;
