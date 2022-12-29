@@ -1,6 +1,7 @@
 const fs = require('fs');
 const models = require('../models/productos');
 const connect = require('../config/mongoDbConfig');
+const mongoose = require('mongoose');
 
 class ContenedorProductosMongoDB {
     constructor() {
@@ -15,6 +16,8 @@ class ContenedorProductosMongoDB {
             return productoGuardado;
         } catch (error) {
             console.log(error);
+        } finally {
+            mongoose.disconnect();
         }
     }
 
@@ -25,6 +28,8 @@ class ContenedorProductosMongoDB {
             return producto;
         } catch (error) {
             console.log(error);
+        } finally {
+            mongoose.disconnect();
         }
     }
 
@@ -35,6 +40,8 @@ class ContenedorProductosMongoDB {
             return productos;
         } catch (error) {
             console.log(error);
+        } finally {
+            mongoose.disconnect();
         }
     }   
 
@@ -45,6 +52,8 @@ class ContenedorProductosMongoDB {
             return producto;
         } catch (error) {
             console.log(error);
+        } finally {
+            mongoose.disconnect();
         }
     }
 
@@ -55,6 +64,8 @@ class ContenedorProductosMongoDB {
             return productos;
         } catch (error) {
             console.log(error);
+        } finally {
+            mongoose.disconnect();
         }
     }
 
@@ -67,6 +78,8 @@ class ContenedorProductosMongoDB {
             return productoActualizado;
         } catch (error) {
             console.log(error);
+        } finally {
+            mongoose.disconnect();
         }
     }
 }
