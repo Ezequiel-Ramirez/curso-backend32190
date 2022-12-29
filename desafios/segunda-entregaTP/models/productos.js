@@ -12,4 +12,6 @@ const productosSchema = new mongoose.Schema({
     timestamp: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.model(productosCollection, productosSchema);
+const models = mongoose.model(productosCollection, productosSchema);
+
+module.exports = models;

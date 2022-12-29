@@ -45,4 +45,4 @@ routerProductosMongoDB.delete('/:id', authAdmin, async (req, res) => {
         res.json(product);
 });
 
-module.exports = routerProductosMongoDB;
+module.exports = routerProductosMongoDB
