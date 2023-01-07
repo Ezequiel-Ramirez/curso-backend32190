@@ -1,5 +1,6 @@
 import { Router } from "express";
 import Producto from "../models/Producto";
+import Mensaje from "../models/Mensaje";
 import { faker } from '@faker-js/faker'
 faker.locale = 'en'
 
@@ -20,7 +21,8 @@ const router = Router();
 
 router.get("/", async (req, res) => {
     const productos = await Producto.find().lean();
-    res.render('index', { productos })
+    const mensajes = await Mensaje.find().lean();
+    res.render('index', { productos, mensajes })
 })
 
 router.post("/api/productos/guardar", async (req, res) => {
@@ -30,7 +32,25 @@ router.post("/api/productos/guardar", async (req, res) => {
     res.redirect('/')
 })
 
-router.get("/api/productos", (req, res) => {
+router.post("/api/mensajes/guardar", async (req, res) => {
+    const {email, nombre, apellido, edad, alias, avatar, message} = req.body;
+    const author = {
+        email: email,
+        nombre: nombre,
+        apellido: apellido,
+        edad: edad,
+        alias: alias,
+        avatar: avatar
+    }
+    const text = message;
+    const timestamp = new Date().toLocaleString()
+    const newMensaje = new Mensaje({ author, text, timestamp });
+    await newMensaje.save();
+    res.redirect('/')
+})
+
+
+router.get("/api/productos-test", (req, res) => {
     const cant = Number(req.query.cant) || 1
     const objs = []
 

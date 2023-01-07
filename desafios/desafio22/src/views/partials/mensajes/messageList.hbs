@@ -1,0 +1,10 @@
+<h1>Últimos mensajes:</h1>
+
+<ul>
+    {{#each mensajes}}
+        <li>
+            <p>{{author.id}}</p>
+            <p>{{timestamp}}: {{text}}</p>
+        </li>
+    {{/each}}
+</ul>
