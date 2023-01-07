@@ -1,11 +1,5 @@
-import express from "express"
+import app from "./app.js"
 
-const app = express()
-
-app.get("/", (req, res) => {
-    res.send("Hello World")
-})
-
-app.listen(3000, () => {
-  console.log("Server on port 3000")
+app.listen(8080, () => {
+    console.log("Server on port 8080")
 })
