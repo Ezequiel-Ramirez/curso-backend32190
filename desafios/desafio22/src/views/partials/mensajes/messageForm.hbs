@@ -1,34 +1,36 @@
 <h1>Centro de Mensajes</h1>
+<div class="card card-body p-4 rounded-0 bg-dark text-white">
 
 <form action="/api/mensajes/guardar" method="POST">
     <div>
         <label for="email">Email</label>
-        <input type="text" name="email" placeholder="Email" id="email" />
+        <input type="text" name="email" placeholder="Email" id="email" class="form-control rounded-0 bg-dark text-white"/>
     </div>
     <div>
         <label for="nombre">Nombre</label>
-        <input type="text" name="nombre" placeholder="nombre" id="nombre" />
+        <input type="text" name="nombre" placeholder="nombre" id="nombre" class="form-control rounded-0 bg-dark text-white"/>
     </div>
     <div>
         <label for="apellido">Apellido</label>
-        <input type="text" name="apellido" placeholder="apellido" id="apellido" />
+        <input type="text" name="apellido" placeholder="apellido" id="apellido" class="form-control rounded-0 bg-dark text-white"/>
     </div>
     <div>
         <label for="edad">Edad</label>
-        <input type="number" name="edad" placeholder="edad" id="edad" />
+        <input type="number" name="edad" placeholder="edad" id="edad" class="form-control rounded-0 bg-dark text-white"/>
     </div>
     <div>
         <label for="alias">Alias</label>
-        <input type="text" name="alias" placeholder="alias" id="alias" />
+        <input type="text" name="alias" placeholder="alias" id="alias" class="form-control rounded-0 bg-dark text-white"/>
     </div>
     <div>
         <label for="avatar">Avatar</label>
-        <input type="text" name="avatar" placeholder="avatar" id="avatar" />
+        <input type="text" name="avatar" placeholder="avatar" id="avatar" class="form-control rounded-0 bg-dark text-white"/>
     </div>
     <div>
         <label for="message">Mensaje</label>
-        <input type="text" name="message" placeholder="Mensaje" id="message" />
+        <input type="text" name="message" placeholder="Mensaje" id="message" class="form-control rounded-0 bg-dark text-white"/>
     </div>
     <div>
-        <button type="submit">Enviar</button>
+        <button type="submit" class="btn btn-secondary mt-3">Enviar</button>
     </div>
+</div>

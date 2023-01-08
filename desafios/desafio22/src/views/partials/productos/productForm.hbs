@@ -1,22 +1,24 @@
 <h1>Agregar productos:</h1>
+<div class="card card-body p-4 rounded-0 bg-dark text-white">
 
 <form action="/api/productos/guardar" method="POST">
     <div>
         <label for="title">Nombre</label>
-        <input type="text" name="title" placeholder="Nombre" id="title" />
+        <input type="text" name="title" placeholder="Nombre" id="title" class="form-control rounded-0 bg-dark text-white"/>
     </div>
     <div>
         <label for="price">Precio</label>
-        <input type="text" name="price" placeholder="Valor" id="price" />
+        <input type="text" name="price" placeholder="Valor" id="price" class="form-control rounded-0 bg-dark text-white"/>
     </div>
     <div>
         <label for="thumbnail">Imagen</label>
-        <input type="text" name="thumbnail" placeholder="URL" id="thumbnail" />
+        <input type="text" name="thumbnail" placeholder="URL" id="thumbnail" class="form-control rounded-0 bg-dark text-white"/>
     </div>
     <div>
-        <button type="submit">Adicionar</button>
-        <button>
-            <a href="/api/productos-test">Agregar productos desde Faker.js</a>
+        <button type="submit" class="btn btn-secondary mt-3">Adicionar</button>
+        <button class="btn btn-primary mt-3">
+            <a href="/api/productos-test" class="text-white">Agregar productos desde Faker.js</a>
         </button>
     </div>
 </form>
+</div>

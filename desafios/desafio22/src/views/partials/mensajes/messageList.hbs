@@ -1,10 +1,28 @@
 <h1>Últimos mensajes:</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <ul class="list-group
+            {{#if mensajes.length}}
+                list-group-flush
+            {{/if}}
+            ">
+                {{#each mensajes}}
+                    <li class="list-group-item">
+                        <p class="text-primary">{{author.id}}</p>
+                        <p class="text-danger">{{timestamp}}: <span class="text-success">{{text}}</span></p>
+                    </li>
+                {{/each}}
 
-<ul>
-    {{#each mensajes}}
-        <li>
-            <p>{{author.id}}</p>
-            <p>{{timestamp}}: {{text}}</p>
-        </li>
-    {{/each}}
-</ul>
+                {{#unless mensajes.length}}
+                    <li class="list-group-item">
+                        <p>No hay mensajes</p>
+                    </li>
+                {{/unless}}
+
+            </ul>
+        </div>
+    </div>
+</div>
+
+
