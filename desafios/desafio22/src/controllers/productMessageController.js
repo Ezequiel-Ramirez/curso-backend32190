@@ -19,7 +19,7 @@ export const createProduct = async (req, res) => {
 export const createMessage = async (req, res) => {
     const {email, nombre, apellido, edad, alias, avatar, message} = req.body;
     const author = {
-        email: email,
+        id: email,
         nombre: nombre,
         apellido: apellido,
         edad: edad,
