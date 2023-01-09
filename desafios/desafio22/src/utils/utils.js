@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker'
 import { normalize, schema, denormalize } from 'normalizr';
+import util from 'util';
 
 faker.locale = 'en'
 
@@ -25,9 +26,11 @@ function normalizeMessages(data) {
         messages: data
     }
     const author = new schema.Entity('author', {}, { idAttribute: 'email' });
-    const mensaje = new schema.Entity('mensaje', { author });
-    const mensajesNormalizados = normalize(messages, mensaje);
+    const mensaje = new schema.Entity('mensaje', { author: [author] });
+    const mensajes = new schema.Entity('mensajes', { messages: [mensaje] });
+    const mensajesNormalizados = normalize(messages, mensajes);
 
+    console.log(util.inspect(mensajesNormalizados, false, null, true /* enable colors */))
     const tamanoMensajesNormalizados = JSON.stringify(mensajesNormalizados).length;
     valueToReturn.lengthNormalized = tamanoMensajesNormalizados;
     const tamanoMensajesOriginal = JSON.stringify(messages).length;
@@ -36,7 +39,7 @@ function normalizeMessages(data) {
     valueToReturn.dataNormalized = mensajesNormalizados;
     valueToReturn.percentageCompression = (100 - (JSON.stringify(mensajesNormalizados).length * 100 / JSON.stringify(messages).length)).toFixed(2);
 
-    const mensajesDesnormalizados = denormalize(mensajesNormalizados.result, mensaje, mensajesNormalizados.entities);
+    const mensajesDesnormalizados = denormalize(mensajesNormalizados.result, mensajes, mensajesNormalizados.entities);
     valueToReturn.dataDenormalized = mensajesDesnormalizados;
     return valueToReturn;
 }
