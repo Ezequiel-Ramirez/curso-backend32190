@@ -1,6 +1,7 @@
 import { Schema, model } from 'mongoose';
 
 const mensajeSchema = new Schema({
+    id: { type: String, required: true },
     author: {
         id: { type: String, required: true },
         nombre: { type: String, required: true },

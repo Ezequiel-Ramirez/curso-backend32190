@@ -1,12 +1,18 @@
 import Producto from '../models/producto.js';
 import Mensaje from '../models/mensaje.js';
-import { getProduct } from '../utils/utils.js';
+import { getProduct, normalizeMessages } from '../utils/utils.js';
+
+import util from 'util';
 
 
 export const renderIndex = async (req, res) => {
     const productos = await Producto.find().lean();
     const mensajes = await Mensaje.find().lean();
-    res.render('index', { productos, mensajes })
+
+const mensajesNormalizados = normalizeMessages(mensajes);
+console.log('mensajesNormalizados', mensajesNormalizados)
+
+    res.render('index', { productos, mensajes, mensajesNormalizados })
 }
 
 export const createProduct = async (req, res) => {
@@ -17,7 +23,8 @@ export const createProduct = async (req, res) => {
 }
 
 export const createMessage = async (req, res) => {
-    const {email, nombre, apellido, edad, alias, avatar, message} = req.body;
+    const { email, nombre, apellido, edad, alias, avatar, message } = req.body;
+    const id = email;
     const author = {
         id: email,
         nombre: nombre,
@@ -28,13 +35,13 @@ export const createMessage = async (req, res) => {
     }
     const text = message;
     const timestamp = new Date().toLocaleString()
-    const newMensaje = new Mensaje({ author, text, timestamp });
+    const newMensaje = new Mensaje({id, author, text, timestamp });
     await newMensaje.save();
     res.redirect('/')
 }
 
 export const createProductTest = async (req, res) => {
-    const cant = Number(req.query.cant) || 1
+    const cant = Number(req.query.cant) || 5;
     const objs = []
 
     for (let i = 0; i < cant; i++) {

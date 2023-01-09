@@ -3,18 +3,18 @@
     <div class="row">
         <div class="col-12">
             <ul class="list-group
-            {{#if mensajes.length}}
+            {{#if mensajesNormalizados.dataDenormalized.messages.length}}
                 list-group-flush
             {{/if}}
             ">
-                {{#each mensajes}}
+                {{#each mensajesNormalizados.dataDenormalized.messages}}
                     <li class="list-group-item">
                         <p class="text-primary">{{author.id}}</p>
                         <p class="text-danger">{{timestamp}}: <span class="text-success">{{text}}</span></p>
                     </li>
                 {{/each}}
 
-                {{#unless mensajes.length}}
+                {{#unless mensajesNormalizados.dataDenormalized.messages.length}}
                     <li class="list-group-item">
                         <p>No hay mensajes</p>
                     </li>
