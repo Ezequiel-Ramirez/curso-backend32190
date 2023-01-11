@@ -17,7 +17,7 @@ app.engine(".hbs", engine({
 }))
 app.set('view engine', '.hbs')
 
-
+app.use(express.static('public'));
 //middlewares
 app.use(morgan('dev'))
 app.use(express.urlencoded({ extended: true }));

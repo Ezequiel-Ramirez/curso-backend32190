@@ -8,7 +8,7 @@ import util from 'util';
 export const renderIndex = async (req, res) => {
     const productos = await Producto.find().lean();
     const mensajes = await Mensaje.find().lean();
-
+//console.log('mensajes', mensajes)
 const mensajesNormalizados = normalizeMessages(mensajes);
 console.log('mensajesNormalizados', mensajesNormalizados)
 
