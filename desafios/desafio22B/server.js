@@ -74,12 +74,9 @@ app.get('/api/productos-test', async (req, res) => {
 // socket
 io.on('connection', async socket => {
     console.log('Un cliente se ha conectado')
-
-
-
     //guardar mensajes en la base de datos y mostrarlos con mongodb
     //obtengo los mensajes de la base de datos y los normalizo antes de enviarlos
-    //socket.emit('messages', await mongoMensajes.getAll())
+
     const mensajesMongo = await mongoMensajes.getAll()
     const messages = {
         id: 'mensajesTest',
@@ -96,9 +93,6 @@ io.on('connection', async socket => {
         console.log(data)
         await mongoMensajes.save(data)
 
-        //const mensajes = await mongoMensajes.getAll()
-
-        //io.sockets.emit('messages', mensajes)
         const mensajesMongo = await mongoMensajes.getAll()
         const messages = {
             id: 'mensajesTest',
@@ -111,9 +105,6 @@ io.on('connection', async socket => {
 
         socket.emit('messages', mensajesNormalizados)
     })
-
-
-
 
     //guardar productos en la base de datos y mostrarlos con mongodb
     socket.emit('products', await mongo.getAll())
