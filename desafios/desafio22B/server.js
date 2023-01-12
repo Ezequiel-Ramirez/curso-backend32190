@@ -56,6 +56,7 @@ io.on('connection', async socket => {
    
 
     //guardar mensajes en la base de datos y mostrarlos con mongodb
+    //obtengo los mensajes de la base de datos y los normalizo antes de enviarlos
     socket.emit('messages', await mongoMensajes.getAll())
     socket.on('new-message', async data => {
 console.log(data)
