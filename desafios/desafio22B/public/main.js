@@ -5,8 +5,8 @@ const socket = io()
 
 socket.on('messages', data => {
     //denormalizo los datos
-    const mensajesDenormalizados = normalize.denormalize(data.result, mensajes, data.entities)
-    console.log('mensajesDenormalizados',mensajesDenormalizados)
+    /* const mensajesDenormalizados = normalize.denormalize(data.result, mensajes, data.entities)
+    console.log('mensajesDenormalizados',mensajesDenormalizados) */
     //fin denormalizacion
     console.log('data',data)
     const html = data.map(msj => {
