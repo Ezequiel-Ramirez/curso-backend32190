@@ -11,7 +11,7 @@ const mensajeSchema = new Schema({
         avatar: { type: String, required: true },
     },
     text: { type: String, required: true },
-    timestamp: { type: Date, required: true },
+    timestamp: { type: String, required: true },
 });
 
 const Mensaje = model('Mensaje', mensajeSchema);
