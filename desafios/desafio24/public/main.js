@@ -14,23 +14,15 @@ socket.on('messages', data => {
     mensajesNtamaño = decompressionPorcentaje.toFixed(2);
     const mensajesDenormalizados = normalizr.denormalize(data.result, mensajes, data.entities)
     //fin denormalizacion
-   const html2 = `Decompression: ${mensajesNtamaño} %`
+    const html2 = `Decompression: ${mensajesNtamaño} %`
     const html = mensajesDenormalizados.messages.map(msj => {
-        return `<div class="rounded col-3 text-break" style="background: gray">
+        return `<div class="rounded col-12 text-break" style="background: white">
         <div class="row">
-            <div class="col-5">
-                <p>${msj.author.id}</p>
-                <p>${msj.timestamp}</p>  
-            </div>
-            <div class="col-8">
-                <div class="row">
-                    <div class="col-12">
-                        <h5>${msj.author.nombre} ${msj.author.apellido}</h5>
-                    </div>
-                    <div class="col-12">
-                        <p>${msj.text}</p>
-                    </div>
-                </div>
+            <div class="col-12 d-flex justify-content-around">
+                <p class="text-info">${msj.author.id}</p>
+                <p class="text-danger">${msj.timestamp}</p>
+                <p>${msj.text}</p>
+                <h5 class="text-capitalize">${msj.author.apellido}</h5>  
             </div>
         </div>
     </div>`
