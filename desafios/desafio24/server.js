@@ -48,7 +48,7 @@ app.get('/', async (req, res) => {
 
 
 app.get('/api/productos-test', async (req, res) => {
-    const cant = Number(req.query.cant) || 5;
+    const cant = Number(req.query.cant) || 1;
     const objs = []
 
     for (let i = 0; i < cant; i++) {
