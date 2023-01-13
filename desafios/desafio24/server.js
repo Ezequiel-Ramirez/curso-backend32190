@@ -9,7 +9,11 @@ const ClientSQLLite = require('./sqlContenedorMensajes.js')
 const ContenedorMongodbProductos = require('./mongodbContenedorProductos.js')
 const ContenedorMongodbMensajes = require('./mongodbContenedorMensajes.js')
 const { normalizarMensajes, getProductsFaker } = require('./utils/utils')
+const session = require('express-session')
+const auth = require('./middlewares/middlewares')
+const MongoStore = require('connect-mongo')
 
+const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true }
 
 const mongo = new ContenedorMongodbProductos()
 const mongoMensajes = new ContenedorMongodbMensajes()
@@ -39,15 +43,71 @@ sqlLite.crearTabla().then(() => {
     console.log('tabla mensajes creada')
 })
 
+//middleware de session
+app.use(session({
+    //conecto a mongo Atlas
+    store: MongoStore.create({
+        mongoUrl: "mongodb+srv://ezequiel:ezequiel@backendcodercurso.y3plhcv.mongodb.net/desafio24?retryWrites=true&w=majority",
+        mongoOptions: advancedOptions,
+        collectionName: "sessions",
+        ttl: 600,
+    }),
+    secret: "cursoBackend",
+    resave: false,
+    saveUninitialized: false
+}))
+
+
+
 // get
-app.get('/', async (req, res) => {
+app.get('/', auth, async (req, res) => {
     //res.render('inicio', { productos: await sql.listarArticulos() })
     //con mongodb
-    res.render('inicio', { productos: await mongo.getAll() })
+    const nombre = req.session.username || ""
+    res.render('inicio', { productos: await mongo.getAll(), nombre })
 })
 
 
-app.get('/api/productos-test', async (req, res) => {
+//login
+app.get('/login', (req, res) => {
+    if (req.session.username && req.session.admin) {
+        res.redirect('/')
+    } else {
+        res.render('login')
+    }
+})
+
+//loing
+app.post('/login', (req, res) => {
+    const { username } = req.body
+
+    if (username !== '') {
+        req.session.username = username
+        req.session.admin = true
+        res.redirect('/')
+    } else {
+        res.redirect('/login')
+    }
+})
+
+//logout
+app.post('/logout', (req, res) => {
+    const nombre = req.session.username || ""
+    if (req.session.username && req.session.admin) {
+        req.session.destroy(err => {
+            if (err) {
+                res.json({ error: "algo hiciste mal", descripcion: err })
+            } else {
+                res.render('messageLogout', { nombre })
+            }
+        })
+    } else {
+        res.redirect('/login')
+    }
+})
+
+
+app.get('/api/productos-test', auth, async (req, res) => {
     const cant = Number(req.query.cant) || 1;
     const objs = []
 

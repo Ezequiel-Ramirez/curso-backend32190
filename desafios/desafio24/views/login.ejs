@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi plantilla de Ingreso de Datos en EJS y Socket.io desafio 22</title>
+    <title>Login</title>
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/normalizr@3.6.1/dist/normalizr.browser.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
@@ -15,12 +15,16 @@
 <body>
     <div class="container mt-3">
         <div class="jumbotron">
+            <form action="/login" method="POST">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Login de Usuario:</label>
+                    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                        placeholder="User" name="username">
+                    <small id="emailHelp" class="form-text text-muted">We'll never share your username with anyone else.</small>
 
-            <%- include('./logout')-%>
-            <%- include('./formulario')-%>
-            <%- include('./historial')-%>
-            <%- include('./formChat')-%>
+                    <button type="submit" class="btn btn-primary">Submit</button>
         </div>
+        </form>
     </div>
 
     <script src="./main.js"></script>
