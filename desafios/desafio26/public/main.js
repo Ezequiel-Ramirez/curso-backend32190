@@ -1,77 +1,133 @@
-
+//CLIENTE
 const socket = io()
-const author = new normalizr.schema.Entity('author', {}, { idAttribute: 'id' });
 
-const mensaje = new normalizr.schema.Entity("mensaje", { author: author });
+// SCHEMA Normalizer //
+const authorSchema = new normalizr.schema.Entity("author", {}, { idAttribute: "email" });
 
-const mensajes = new normalizr.schema.Entity("mensajes", { messages: [mensaje] });
+const messageSchema = new normalizr.schema.Entity("message", { author: authorSchema });
+
+const messagesSchema = new normalizr.schema.Entity("messages", { messages: [messageSchema] });
+//------------------//
+
+socket.on('mensajes', mensajes => {
+
+  console.log(mensajes)
+
+  let mensajeNorm = mensajes.dataNormalized
+
+  console.log(mensajeNorm)
+
+  let dataDenormalizada = normalizr.denormalize(mensajeNorm.result, messagesSchema, mensajeNorm.entities)
+
+  console.log(dataDenormalizada)
 
 
-socket.on('messages', data => {
-    //denormalizo los datos
-    let mensajesNtamaño = JSON.stringify(mensajes).length;
-    const decompressionPorcentaje = (mensajesNtamaño - JSON.stringify(data).length) / mensajesNtamaño * 100;
-    mensajesNtamaño = decompressionPorcentaje.toFixed(2);
-    const mensajesDenormalizados = normalizr.denormalize(data.result, mensajes, data.entities)
-    //fin denormalizacion
-    const html2 = `Decompression: ${mensajesNtamaño} %`
-    const html = mensajesDenormalizados.messages.map(msj => {
-        return `<div class="rounded col-12 text-break" style="background: white">
-        <div class="row">
-            <div class="col-12 d-flex justify-content-around">
-                <p class="text-info">${msj.author.id}</p>
-                <p class="text-danger">${msj.timestamp}</p>
-                <p>${msj.text}</p>
-                <h5 class="text-capitalize">${msj.author.apellido}</h5>  
-            </div>
-        </div>
-    </div>`
-    })
-        .join("<br>")
+  let html = ""
+  if ((dataDenormalizada.messages.length >= 1)) {
+    html = dataDenormalizada.messages.map(msj => {
+      return `<div class="container mt-3 style=text-align: center">                  
+                  <strong style="color:blue">${msj.author.nombre}</strong>
+                  [<span style="color:brown">${msj.timestamp}</span>]
+                  <em style="color:green">: ${msj.text}</em>
+                  
+              </div>`
+    }).join(" ")
+  }
+  document.getElementById("message").innerHTML = html
 
-    document.getElementById("messages").innerHTML = html
-    document.getElementById("decompresion").innerHTML = html2
+  let p = `<h1 style="color:crimson; text-align: center;">Compresion: %${mensajes.porcentageCompression}</h1>`
+
+  document.getElementById("compresion").innerHTML = p
 })
 
+socket.on('faker', product => {
+  if (product.length >= 1) {
+    let html2 = product.map(prod => {
+      return `<tr> 
+                <td>${prod.id}</td>               
+                <td>${prod.nombre}</td>
+                <td>${prod.descripcion}</td>
+                <td>${prod.codigo}</td>
+                <td>${prod.precio}</td>                
+                <td><img style="width: 80px;" src="${prod.foto}", alt="sin imagen"></td>
+                <td>${prod.stock}</td>                
+              </tr>`
+    }).join(" ")
+
+    html = `
+    <h1 style="color:crimson; text-align: center"> 5 Productos Random</h1>
+      <table class="table table-dark">
+        <tr style="color: yellow;"> <th>ID</th><th>Titulo</th> <th>Descripcion</th> <th>Codigo</th> <th>Precio</th> <th>Imagen</th> <th>Stock</th></tr>
+        ${html2}    
+      </table>`
+
+  }
+  document.getElementById("product").innerHTML = html
+})
+
+socket.on('productos', produc => {
+  if (produc.length >= 1) {
+    let html2 = produc.map(produ => {
+      return `<tr>                               
+                <td>${produ.titulo}</td>
+                <td>${produ.descripcion}</td>
+                <td>${produ.codigo}</td>
+                <td>${produ.precio}</td>                
+                <td><img style="width: 80px;" src="${produ.foto}", alt="sin imagen"></td>
+                <td>${produ.stock}</td>                
+              </tr>`
+    }).join(" ")
+
+    html = `
+    <h1 style="color:crimson; text-align: center"> HISTORIAL</h1>
+      <table class="table table-dark">
+        <tr style="color: yellow;"><th>titulo</th> <th>Descripcion</th> <th>Codigo</th> <th>Precio</th> <th>Imagen</th> <th>Stock</th></tr>
+        ${html2}    
+      </table>`
+
+  }
+  document.getElementById("producto").innerHTML = html
+})
+
+//----------------Funcion guardar mensajes---------------------------//
+// Toma los valores de los imput, los guarda y los envia al servidor //
 function addMessage() {
-    const message = {
-        id: document.getElementById("username").value,
-        author: {
-            id: document.getElementById("username").value,
-            nombre: document.getElementById("nombres").value,
-            apellido: document.getElementById("apellido").value,
-            edad: document.getElementById("edad").value,
-            alias: document.getElementById("alias").value,
-            avatar: document.getElementById("avatar").value,
-        },
-        text: document.getElementById("text").value,
-        timestamp: new Date().toLocaleString()
-    }
 
-    socket.emit('new-message', message)
-    return false
+  const message = {
+
+    author: {
+      email: document.getElementById("email").value,
+      nombre: document.getElementById("nombre").value,
+      apellido: document.getElementById("apellido").value,
+      edad: document.getElementById("edad").value,
+      alias: document.getElementById("alias").value,
+      avatar: document.getElementById("avatar").value,
+    },
+    text: document.getElementById("texto").value,
+    timestamp: new Date().toLocaleString(),
+
+  }
+
+  socket.emit('new-msj', message)
+  return false
+
 }
+//-------------------------------------------------------------------//
 
-socket.on('products', (data) => {
-    const html = data.map(product => {
-        return `<div class="col-4 mb-2" >${product.title}</div>
-        <div class="col-4" >${product.price}</div>
-        <div class="col-4" >${product.thumbnail}</div>`
-    })
-        .join("<br>")
-
-    document.getElementById("products").innerHTML = html
-
-})
-
+//---------------Funcion guardar productos --------------------------//
+// Toma los valores de los imput, los guarda y los envia al servidor //
 function addProduct() {
-    const product = {
-        title: document.getElementById("nombre").value,
-        price: document.getElementById("precio").value,
-        thumbnail: document.getElementById("imagen").value
-    }
 
-    socket.emit('new-product', product)
-    return false
+  const producto = {
+    titulo: document.getElementById("titulo").value,
+    descripcion: document.getElementById("descripcion").value,
+    codigo: parseInt(document.getElementById("codigo").value),
+    precio: parseInt(document.getElementById("precio").value),
+    foto: document.getElementById("imagen").value,
+    stock: parseInt(document.getElementById("stock").value),
+  }
+
+  socket.emit('new-product', producto)
+  return false
 }
-
+//--------------------------------------------------------------------//

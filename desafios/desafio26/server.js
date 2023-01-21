@@ -1,152 +1,132 @@
+//Class containerMensajesMongoDB.js
+const ContenedorMensajesMongoDB = require('./containers/containerMensajesMongoDB')
+const mensajesMongoDB = new ContenedorMensajesMongoDB()
+
+//SERVIDOR
 const express = require('express')
+const session = require('express-session')
+const cookieParser = require("cookie-parser")
+const MongoStore = require("connect-mongo")
+const { registrar, login, datos, logout, raiz } = require('./routers/routers');
+
 const { Server: HttpServer } = require('http')
 const { Server: IOServer } = require('socket.io')
-const { option } = require('./options/mysqlconnection')
-const connectDB = require('./options/mongodb')
-const { optionLite } = require('./options/myslLiteconnection')
-const ClientSQL = require('./sqlContenedor.js')
-const ClientSQLLite = require('./sqlContenedorMensajes.js')
-const ContenedorMongodbProductos = require('./mongodbContenedorProductos.js')
-const ContenedorMongodbMensajes = require('./mongodbContenedorMensajes.js')
-const { normalizarMensajes, getProductsFaker } = require('./utils/utils')
-const session = require('express-session')
-const auth = require('./middlewares/middlewares')
-const MongoStore = require('connect-mongo')
-
-const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true }
-
-const mongo = new ContenedorMongodbProductos()
-const mongoMensajes = new ContenedorMongodbMensajes()
-const sql = new ClientSQL(option)
-const sqlLite = new ClientSQLLite(optionLite)
-
-
-connectDB()
-
+const passport = require("passport")
 const app = express()
-const httpServer = HttpServer(app)
+const httpServer = new HttpServer(app)
 const io = new IOServer(httpServer)
-
-app.use(express.static('./public'))
-app.use(express.urlencoded({ extended: true }))
-app.use(express.json())
+const PORT = 8080
+const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true }
 
 app.set('view engine', 'ejs')
 
-//creo la tabla
-sql.crearTabla().then(() => {
-    console.log('tabla creada')
-})
-
-//creo la tabla mensajes
-sqlLite.crearTabla().then(() => {
-    console.log('tabla mensajes creada')
-})
-
-//middleware de session
+app.use(cookieParser())
 app.use(session({
-    //conecto a mongo Atlas
     store: MongoStore.create({
-        mongoUrl: "mongodb+srv://ezequiel:ezequiel@backendcodercurso.y3plhcv.mongodb.net/desafio24?retryWrites=true&w=majority",
-        mongoOptions: advancedOptions,
-        collectionName: "sessions",
-        ttl: 600,
+        mongoUrl: "mongodb+srv://ezequiel:ezequiel@backendcodercurso.y3plhcv.mongodb.net/desafio26?retryWrites=true&w=majority",
+        mongoOptions: advancedOptions
     }),
-    secret: "cursoBackend",
+    secret: "coderhouse",
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    rolling: true,
+    cookie: { maxAge: 60000 }
 }))
+app.use(express.static("./public"))
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
+app.use(passport.initialize())
+app.use(passport.session())
 
 
+app.use((req, res, next) => {
+    req.isAuthenticated = () => {
+        if (req.session.nombre) {
+            return true
+        }
+        return false
+    }
 
-// get
-app.get('/', auth, async (req, res) => {
-    //res.render('inicio', { productos: await sql.listarArticulos() })
-    //con mongodb
-    const nombre = req.session.username || ""
-    res.render('inicio', { productos: await mongo.getAll(), nombre })
+    req.logout = callback => {
+        req.session.destroy(callback)
+    }
+
+    next()
 })
 
-
-//login
-app.get('/login', (req, res) => {
-    if (req.session.username && req.session.admin) {
-        res.redirect('/')
+app.get('/', async (req, res) => {
+    if (req.session.nombre) {
+        res.redirect('/datos')
     } else {
         res.render('login')
     }
 })
+app.use('/', registrar)
+app.use('/', login)
+app.use('/', datos)
+app.use('/', logout)
+app.use('/', raiz)
 
-//loing
-app.post('/login', (req, res) => {
-    const { username } = req.body
-
-    if (username !== '') {
-        req.session.username = username
-        req.session.admin = true
-        res.redirect('/')
-    } else {
-        res.redirect('/login')
-    }
+app.get('/test', async (req, res) => {
+    res.render("productos")
 })
 
-//logout
-app.post('/logout', (req, res) => {
-    const nombre = req.session.username || ""
-    if (req.session.username && req.session.admin) {
-        req.session.destroy(err => {
-            if (err) {
-                res.json({ error: "algo hiciste mal", descripcion: err })
-            } else {
-                res.render('messageLogout', { nombre })
-            }
-        })
-    } else {
-        res.redirect('/login')
-    }
-})
+io.on("connection", async (socket) => {
+    const mensajes = await mensajesMongoDB.getAll()
 
+    const stringifyData = JSON.stringify(mensajes)
+    const parseData = JSON.parse(stringifyData)
 
-app.get('/api/productos-test', auth, async (req, res) => {
-    const cant = Number(req.query.cant) || 1;
-    const objs = []
+    const normalizado = await mensajesMongoDB.normalizeMessages(parseData)
 
-    for (let i = 0; i < cant; i++) {
-        objs.push(getProductsFaker(i + 1))
-        await mongo.save(getProductsFaker(i + 1))
-    }
-    res.json(objs)
-})
+    socket.emit('mensajes', normalizado)
 
-// socket
-io.on('connection', async socket => {
-    console.log('Un cliente se ha conectado')
-    //guardar mensajes en la base de datos y mostrarlos con mongodb
-    //obtengo los mensajes de la base de datos y los normalizo antes de enviarlos
+    socket.on('new-msj', async (message) => {
+        if (message.author.email && message.author.nombre && message.author.apellido && message.author.edad && message.author.alias && message.author.avatar
+            && message.text) {
+            await mensajesMongoDB.save(message)
 
-    const mensajesMongo = await mongoMensajes.getAll()
-    const mensajesNormalizados = normalizarMensajes(mensajesMongo)
-    socket.emit('messages', mensajesNormalizados)
+            let todosmensajes = await mensajesMongoDB.getAll()
 
-    socket.on('new-message', async data => {
-        await mongoMensajes.save(data)
-        const mensajesMongo = await mongoMensajes.getAll()
-        const mensajesNormalizados = normalizarMensajes(mensajesMongo)
-        socket.emit('messages', mensajesNormalizados)
+            const stringifyData = JSON.stringify(todosmensajes)
+            const parseData = JSON.parse(stringifyData)
+
+            const normalizado = await mensajesMongoDB.normalizeMessages(parseData)
+
+            io.sockets.emit('mensajes', normalizado)
+        } else {
+            console.log('Faltan completar campos')
+        }
     })
 
-    //guardar productos en la base de datos y mostrarlos con mongodb
-    socket.emit('products', await mongo.getAll())
-    socket.on('new-product', async data => {
+    let productos = await mensajesMongoDB.getAllProductos()
 
-        await mongo.save(data)
-        const productos = await mongo.getAll()
-        io.sockets.emit('products', productos)
+    socket.emit('productos', productos)
+
+    socket.on('new-product', async (data) => {
+        let todosProductos = data
+
+        if (data.titulo && data.descripcion && data.codigo && data.precio && data.foto && data.stock) {
+            await mensajesMongoDB.saveProductos(todosProductos)
+
+            console.log('Articulos Almacenados')
+
+            const productos = await mensajesMongoDB.getAllProductos()
+
+            io.sockets.emit('productos', productos)
+        }
+        else { console.log('Faltan completar campos') }
     })
+
+
+    let productosFaker = []
+
+    for (let i = 0; i < 5; i++) {
+        productosFaker.push(await mensajesMongoDB.crearProducto(i + 1))
+    }
+
+    socket.emit('faker', productosFaker)
 })
 
-// listen
-const PORT = 8080
-httpServer.listen(PORT, () => {
-    console.log(`Servidor escuchando en el puerto ${PORT}`)
-})
+httpServer.listen(PORT, () => console.log(`Server escuchando en puerto ${PORT}`))
+

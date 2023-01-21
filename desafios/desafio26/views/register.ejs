@@ -2,11 +2,11 @@
 <body>
     <div class="container my-5">
         <div class="jumbotron">
-            <h1>LOGIN</h1>
+            <h1>REGISTRARSE</h1>
             <br />
             <form
                 class="form"
-                action="/login"
+                action="/register"
                 method="post"
                 role="form"
                 autocomplete="off"
@@ -35,20 +35,32 @@
 
                 <div class="form-group">
                     <input
+                        id="direccion"
+                        name="direccion"
+                        placeholder="direccion"
+                        class="form-control"
+                        type="text"
+                        required
+                    />
+                </div>
+
+                <div class="form-group">
+                    <input
                         class="btn btn-success my-3"
                         type="submit"
-                        value="Login"
+                        value="REGISTRARSE"
                     />
                 </div>
             </form>
 
             <hr />
+
             <div class="text-left">
                 <button
                     class="btn btn-success my-3"
-                    onclick="location.href = '/register'"
+                    onclick="location.href='/login'"
                 >
-                    Ir a Registrarse
+                    Ir a Login
                 </button>
             </div>
         </div>
