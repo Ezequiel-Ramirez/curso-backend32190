@@ -8,7 +8,8 @@ const {
     postLogin,
     getDatos,
     getLogout,
-    getRaiz
+    getRaiz,
+    getDatosProcess
 } = require('../controllers/controlerNuevo')
 const { Router } = require('express')
 const registrar = Router()
@@ -16,6 +17,7 @@ const login = Router()
 const datos = Router()
 const logout = Router()
 const raiz = Router()
+const datosProcess = Router()
 
 //-----------------------------BCRYPT----------------------------------//
 function createHash(password) {
@@ -89,10 +91,13 @@ login.get('/faillogin', (req, res) => { res.render('login-error') })
 // Ruta Datos //
 datos.get('/datos', postLogin, getDatos)
 
+// Ruta Datos del Process //
+datosProcess.get('/info', getDatosProcess)
+
 // Ruta Logout //
 logout.get('/logout', getLogout)
 
 // Ruta Raiz //
 raiz.get('/', getRaiz)
 
-module.exports = { registrar, login, datos, logout, raiz };
+module.exports = { registrar, login, datos, logout, raiz, datosProcess };

@@ -1,5 +1,6 @@
 const ContenedorUsuarioMongoDB = require('../containers/containerUsuariosMongoDB')
 const usuariosMongoDB = new ContenedorUsuarioMongoDB()
+const dotenv = require('dotenv')
 
 // Rutas de registro //
 const getRegistrar = async (req, res) => {
@@ -47,6 +48,34 @@ const getDatos = async (req, res) => {
     }
 }
 
+// Ruta Datos del Process //
+const getDatosProcess = async (req, res) => {
+    const argumentos = process.argv.slice(2)
+    const plataforma = process.platform
+    const version = process.version
+    const memoria = process.memoryUsage().rss
+    const path = process.execPath
+    const id = process.pid
+    const carpeta = process.cwd()
+
+    if (req.session.nombre) {
+        res.render('data-process', {
+            argumentos,
+            plataforma,
+            version,
+            memoria,
+            path,
+            id,
+            carpeta
+        })
+    } else {
+        req.session.destroy()
+        res.redirect('/login')
+    }
+}
+
+
+
 // Ruta de logout //
 const getLogout = async (req, res) => {
     req.logout(err => {
@@ -65,5 +94,6 @@ module.exports = {
     postLogin,
     getDatos,
     getLogout,
-    getRaiz
+    getRaiz,
+    getDatosProcess
 };
