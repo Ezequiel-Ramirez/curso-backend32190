@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
+const dotenv = require('dotenv');
 
 const connect = async () => {
     
     try {
-        const URL = "mongodb+srv://ezequiel:ezequiel@backendcodercurso.y3plhcv.mongodb.net/desafio28?retryWrites=true&w=majority"
+        const URL = process.env.MONGO_URL || "mongodb+srv://ezequiel:ezequiel@backendcodercurso.y3plhcv.mongodb.net/desafio28?retryWrites=true&w=majority"
         mongoose.connect(URL, {
             useNewUrlParser: true,
             useUnifiedTopology: true

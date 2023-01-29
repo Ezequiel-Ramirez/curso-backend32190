@@ -3,11 +3,13 @@ const ContenedorMensajesMongoDB = require('./containers/containerMensajesMongoDB
 const mensajesMongoDB = new ContenedorMensajesMongoDB()
 
 //SERVIDOR
+const dotenv = require('dotenv')
 const express = require('express')
 const session = require('express-session')
 const cookieParser = require("cookie-parser")
 const MongoStore = require("connect-mongo")
 const { registrar, login, datos, logout, raiz } = require('./routers/routers');
+const parseArgs = require('yargs/yargs')
 
 const { Server: HttpServer } = require('http')
 const { Server: IOServer } = require('socket.io')
@@ -15,15 +17,32 @@ const passport = require("passport")
 const app = express()
 const httpServer = new HttpServer(app)
 const io = new IOServer(httpServer)
-const PORT = 8080
 const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true }
+
+//PORT
+const yargs = parseArgs(process.argv.slice(2))
+
+const { modo, puerto, debug, _ } = yargs
+    .boolean('debug')
+    .alias({
+        m: 'modo',
+        p: 'puerto',
+        d: 'debug'
+    })
+    .default({
+        modo: 'prod',
+        puerto: 8080,
+        debug: false
+    }).argv
+//utilizo el puerto que me pasan por parametro
+const PORT = puerto
 
 app.set('view engine', 'ejs')
 
 app.use(cookieParser())
 app.use(session({
     store: MongoStore.create({
-        mongoUrl: "mongodb+srv://ezequiel:ezequiel@backendcodercurso.y3plhcv.mongodb.net/desafio28?retryWrites=true&w=majority",
+        mongoUrl: process.env.MONGO_URL || "mongodb+srv://ezequiel:ezequiel@backendcodercurso.y3plhcv.mongodb.net/desafio28?retryWrites=true&w=majority",
         mongoOptions: advancedOptions
     }),
     secret: "coderhouse",
@@ -78,19 +97,19 @@ io.on("connection", async (socket) => {
     const parseData = JSON.parse(stringifyData)
 
     const normalizado = await mensajesMongoDB.normalizeMessages(parseData)
-
+    
     socket.emit('mensajes', normalizado)
-
+    
     socket.on('new-msj', async (message) => {
         if (message.author.email && message.author.nombre && message.author.apellido && message.author.edad && message.author.alias && message.author.avatar
             && message.text) {
-            await mensajesMongoDB.save(message)
-
-            let todosmensajes = await mensajesMongoDB.getAll()
-
-            const stringifyData = JSON.stringify(todosmensajes)
-            const parseData = JSON.parse(stringifyData)
-
+                await mensajesMongoDB.save(message)
+                
+                let todosmensajes = await mensajesMongoDB.getAll()
+                
+                const stringifyData = JSON.stringify(todosmensajes)
+                const parseData = JSON.parse(stringifyData)
+                
             const normalizado = await mensajesMongoDB.normalizeMessages(parseData)
 
             io.sockets.emit('mensajes', normalizado)
@@ -128,5 +147,7 @@ io.on("connection", async (socket) => {
     socket.emit('faker', productosFaker)
 })
 
+
 httpServer.listen(PORT, () => console.log(`Server escuchando en puerto ${PORT}`))
+
 
