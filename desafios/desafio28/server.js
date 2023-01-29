@@ -8,7 +8,7 @@ const express = require('express')
 const session = require('express-session')
 const cookieParser = require("cookie-parser")
 const MongoStore = require("connect-mongo")
-const { registrar, login, datos, logout, raiz, datosProcess } = require('./routers/routers');
+const { registrar, login, datos, logout, raiz, datosProcess, numerosRandoms } = require('./routers/routers');
 const parseArgs = require('yargs/yargs')
 
 const { Server: HttpServer } = require('http')
@@ -86,6 +86,7 @@ app.use('/', datos)
 app.use('/', logout)
 app.use('/', raiz)
 app.use('/', datosProcess)
+app.use('/', numerosRandoms)
 
 app.get('/test', async (req, res) => {
     res.render("productos")

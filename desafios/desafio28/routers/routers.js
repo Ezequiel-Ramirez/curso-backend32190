@@ -9,7 +9,8 @@ const {
     getDatos,
     getLogout,
     getRaiz,
-    getDatosProcess
+    getDatosProcess,
+    getNumerosRandom
 } = require('../controllers/controlerNuevo')
 const { Router } = require('express')
 const registrar = Router()
@@ -18,6 +19,7 @@ const datos = Router()
 const logout = Router()
 const raiz = Router()
 const datosProcess = Router()
+const numerosRandoms = Router()
 
 //-----------------------------BCRYPT----------------------------------//
 function createHash(password) {
@@ -94,10 +96,13 @@ datos.get('/datos', postLogin, getDatos)
 // Ruta Datos del Process //
 datosProcess.get('/info', getDatosProcess)
 
+// Ruta números randoms con cantidad desde el params //
+numerosRandoms.get('/api/randoms/:cant?', getNumerosRandom)
+
 // Ruta Logout //
 logout.get('/logout', getLogout)
 
 // Ruta Raiz //
 raiz.get('/', getRaiz)
 
-module.exports = { registrar, login, datos, logout, raiz, datosProcess };
+module.exports = { registrar, login, datos, logout, raiz, datosProcess, numerosRandoms };

@@ -1,6 +1,8 @@
 const ContenedorUsuarioMongoDB = require('../containers/containerUsuariosMongoDB')
 const usuariosMongoDB = new ContenedorUsuarioMongoDB()
 const dotenv = require('dotenv')
+const {fork} = require('child_process')
+const path = require('path')
 
 // Rutas de registro //
 const getRegistrar = async (req, res) => {
@@ -74,6 +76,20 @@ const getDatosProcess = async (req, res) => {
     }
 }
 
+//Ruta de numeros random //
+const getNumerosRandom = async (req, res) => {
+    //recibo por params la cantidad de numeros random que quiero
+    const cantidad = req.params.cant || 100000000;
+
+    const calculo = fork(path.resolve(process.cwd(), './middleware/calculo.js'));
+    calculo.on('message', result => {
+        if (result == 'listo') {
+            calculo.send(cantidad);
+        } else {
+            res.json(result);
+        };
+    });
+};
 
 
 // Ruta de logout //
@@ -95,5 +111,6 @@ module.exports = {
     getDatos,
     getLogout,
     getRaiz,
-    getDatosProcess
+    getDatosProcess,
+    getNumerosRandom
 };
