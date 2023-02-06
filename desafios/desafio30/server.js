@@ -143,9 +143,9 @@ if (MODE === 'FORK') {
     const { fork } = require('child_process')
     const n = require('os').cpus().length
     console.log(`Fork mode on ${n} CPUs`)
-    for (let i = 0; i < n; i++) {
+    /* for (let i = 0; i < n; i++) {
         fork('./server.js')
-    }
+    } */
 
     
 } else if (MODE === 'CLUSTER') {
