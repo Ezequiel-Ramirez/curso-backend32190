@@ -18,7 +18,7 @@ const app = express()
 const httpServer = new HttpServer(app)
 const io = new IOServer(httpServer)
 const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true }
-
+const cluster =require ("cluster");
 
 
 app.set('view engine', 'ejs')
@@ -83,19 +83,19 @@ io.on("connection", async (socket) => {
     const parseData = JSON.parse(stringifyData)
 
     const normalizado = await mensajesMongoDB.normalizeMessages(parseData)
-    
+
     socket.emit('mensajes', normalizado)
-    
+
     socket.on('new-msj', async (message) => {
         if (message.author.email && message.author.nombre && message.author.apellido && message.author.edad && message.author.alias && message.author.avatar
             && message.text) {
-                await mensajesMongoDB.save(message)
-                
-                let todosmensajes = await mensajesMongoDB.getAll()
-                
-                const stringifyData = JSON.stringify(todosmensajes)
-                const parseData = JSON.parse(stringifyData)
-                
+            await mensajesMongoDB.save(message)
+
+            let todosmensajes = await mensajesMongoDB.getAll()
+
+            const stringifyData = JSON.stringify(todosmensajes)
+            const parseData = JSON.parse(stringifyData)
+
             const normalizado = await mensajesMongoDB.normalizeMessages(parseData)
 
             io.sockets.emit('mensajes', normalizado)
@@ -134,45 +134,28 @@ io.on("connection", async (socket) => {
 })
 
 //PORT
-//Tomando con base el proyecto que vamos realizando, agregar un parámetro más en la ruta de comando que permita ejecutar al servidor en modo fork o cluster. Dicho parámetro será 'FORK' en el primer caso y 'CLUSTER' en el segundo, y de no pasarlo, el servidor iniciará en modo fork.
 const argv = parseArgs(process.argv.slice(2)).argv
 const PORT = argv.PORT || 8080
 const MODE = argv.MODE || 'FORK'
+const numCPUs = require('os').cpus().length
 
-if (MODE === 'FORK') {
-    const { fork } = require('child_process')
-    const n = require('os').cpus().length
-    console.log(`Fork mode on ${n} CPUs`)
-    /* for (let i = 0; i < n; i++) {
-        fork('./server.js')
-    } */
+if (MODE === 'CLUSTER' && cluster.isMaster) {
+    console.log(`Master ${process.pid} is running`);
 
-    
-} else if (MODE === 'CLUSTER') {
-    const cluster = require('cluster')
-    const numCPUs = require('os').cpus().length
-    console.log(`Cluster mode on ${numCPUs} CPUs`)
-    if (cluster.isMaster) {
-        console.log(`Master ${process.pid} is running`)
-        for (let i = 0; i < numCPUs; i++) {
-            cluster.fork()
-        }
-        cluster.on('exit', (worker, code, signal) => {
-            console.log(`worker ${worker.process.pid} died`)
-        })
-    } else {
-        httpServer.listen(PORT, () => {
-            console.log(`Servidor http escuchando en el puerto ${PORT}`)
-        })
-        console.log(`Worker ${process.pid} started`)
+    // Fork workers.
+    for (let i = 0; i < numCPUs; i++) {
+        cluster.fork();
     }
+
+    cluster.on('exit', (worker, code, signal) => {
+        console.log(`worker ${worker.process.pid} died`);
+    });
 }
-
-
-const server = httpServer.listen(PORT, () => {
-    console.log(`Servidor http escuchando en el puerto ${PORT}`)
-})
-
-server.on("error", error => console.log(`Error en servidor ${error}`))
+else {
+    httpServer.listen(PORT, () => {
+        console.log(`Servidor http escuchando en el puerto ${PORT}`);
+    })
+    httpServer.on("error", error => console.log(`Error en servidor ${error}`))
+}
 
 
