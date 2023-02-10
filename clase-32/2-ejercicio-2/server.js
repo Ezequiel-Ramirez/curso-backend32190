@@ -47,3 +47,7 @@ if (MODO == 'CLUSTER' && cluster.isMaster) {
         console.log("escuchando en el 8080");
     })
 }
+
+//comando para ejecutar en la terminal en modo cluster
+//artillery quick -c 50 -n 50 "http://localhost:8080/ramdom-debug" > artillery_slow.txt
+//artillery quick -c 50 -n 50 "http://localhost:8080/ramdom-nodebug" > artillery_fast.txt
