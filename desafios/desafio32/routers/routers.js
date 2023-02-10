@@ -20,6 +20,7 @@ const logout = Router()
 const raiz = Router()
 const datosProcess = Router()
 const numerosRandoms = Router()
+const compression = require('compression')
 
 //-----------------------------BCRYPT----------------------------------//
 function createHash(password) {
@@ -94,7 +95,7 @@ login.get('/faillogin', (req, res) => { res.render('login-error') })
 datos.get('/datos', postLogin, getDatos)
 
 // Ruta Datos del Process //
-datosProcess.get('/info', getDatosProcess)
+datosProcess.get('/info', compression(), getDatosProcess)
 
 // Ruta números randoms con cantidad desde el params //
 numerosRandoms.get('/api/randoms/:cant?', getNumerosRandom)
