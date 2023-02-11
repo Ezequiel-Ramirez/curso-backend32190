@@ -21,7 +21,7 @@ class ContenedorMensajesMongoDB {
                 messages: data
             };
             //SCHEMAS
-            const authorSchema = new schema.Entity("author", {}, { idAttribute: "email" });
+            const authorSchema = new schema.Entity("author", {}, { idAttribute: "id" });
             const messageSchema = new schema.Entity("message", {author: authorSchema});
             const messagesSchema = new schema.Entity("messages", {messages: [messageSchema]});
             const messagesNorm = normalize(mensajes, messagesSchema);
@@ -79,6 +79,7 @@ class ContenedorMensajesMongoDB {
                 const mensajeNuevo = {
                     id: 1,
                     author: {
+                        id: mensaje.author.email,
                         email: mensaje.author.email,
                         nombre: mensaje.author.nombre,
                         apellido: mensaje.author.apellido,
@@ -103,6 +104,7 @@ class ContenedorMensajesMongoDB {
                 let objeto = {
                     id: Math.max(...ids) + 1,
                     author: {
+                        id: mensaje.author.email,
                         email: mensaje.author.email,
                         nombre: mensaje.author.nombre,
                         apellido: mensaje.author.apellido,

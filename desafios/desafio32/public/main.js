@@ -2,7 +2,7 @@
 const socket = io()
 
 // SCHEMA Normalizer //
-const authorSchema = new normalizr.schema.Entity("author", {}, { idAttribute: "email" });
+const authorSchema = new normalizr.schema.Entity("author", {}, { idAttribute: "id" });
 
 const messageSchema = new normalizr.schema.Entity("message", { author: authorSchema });
 
