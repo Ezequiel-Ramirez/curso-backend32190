@@ -1,10 +1,11 @@
+
 const { normalize, schema, denormalize } = require('normalizr')
 const { model } = require('../models/mensajes.js');
 const { models } = require('../models/productos.js');
 const { connect } = require('../config/mongoDbConfig.js');
 const { faker } = require('@faker-js/faker');
 faker.locale = 'es'
-
+const logger = require('../logger.js')
 class ContenedorMensajesMongoDB {
     constructor() {
         this.mensajes = [];
@@ -21,12 +22,8 @@ class ContenedorMensajesMongoDB {
             };
             //SCHEMAS
             const authorSchema = new schema.Entity("author", {}, { idAttribute: "email" });
-            const messageSchema = new schema.Entity("message", {
-                author: authorSchema
-            });
-            const messagesSchema = new schema.Entity("messages", {
-                messages: [messageSchema]
-            });
+            const messageSchema = new schema.Entity("message", {author: authorSchema});
+            const messagesSchema = new schema.Entity("messages", {messages: [messageSchema]});
             const messagesNorm = normalize(mensajes, messagesSchema);
             const messageDes = denormalize(messagesNorm.result, messagesSchema, messagesNorm.entities)
             const original = JSON.stringify(mensajes).length
@@ -43,6 +40,7 @@ class ContenedorMensajesMongoDB {
             return valueToReturn //messagesNorm
         } catch (error) {
             console.log(error)
+            logger.error(`Error en la api de mensajes`)
         }
     }
 
@@ -59,6 +57,7 @@ class ContenedorMensajesMongoDB {
             }
         } catch (error) {
             console.log(error)
+            logger.error(`Error en la api de productos ${error}`)
         }
     }
     async saveProductos(producto) {
@@ -120,6 +119,7 @@ class ContenedorMensajesMongoDB {
             }
         } catch (error) {
             console.log(error)
+            logger.error('No se pudo guardar el mensaje')
         }
     }
 
@@ -130,6 +130,7 @@ class ContenedorMensajesMongoDB {
             return productos
         } catch (error) {
             console.log('No existe el archivo por ende no hay productos con el ID buscado')
+            logger.error('No existe el archivo por ende no hay productos con el ID buscado')
             return 'No se encontro el producto con ese ID'
         }
     }
@@ -140,6 +141,7 @@ class ContenedorMensajesMongoDB {
             return mensajes1
         } catch (error) {
             console.log(error)
+            logger.error('No hay productos guardados')
             return 'No hay productos guardados'
         }
     }
@@ -150,6 +152,7 @@ class ContenedorMensajesMongoDB {
             return mensajes1
         } catch (error) {
             console.log(error)
+            logger.error('No hay productos guardados')
             return 'No hay productos guardados'
         }
     }
@@ -160,6 +163,7 @@ class ContenedorMensajesMongoDB {
             return productos
         } catch (error) {
             console.log(error)
+            logger.error('No hay productos guardados')
             return 'No hay productos guardados'
         }
     }
@@ -171,6 +175,7 @@ class ContenedorMensajesMongoDB {
             return producto
         } catch (error) {
             console.log(`Fallo la lectura `)
+            logger.error(`Fallo la lectura `)
             return "Fallo la lectura"
         }
     }
@@ -182,6 +187,7 @@ class ContenedorMensajesMongoDB {
             return productoActualizado;
         } catch (error) {
             console.log(error);
+            logger.error(`No se pudo actualizar el producto con el id ${id}`);
         }
     }
 }

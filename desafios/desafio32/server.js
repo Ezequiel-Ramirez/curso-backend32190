@@ -19,6 +19,7 @@ const httpServer = new HttpServer(app)
 const io = new IOServer(httpServer)
 const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true }
 const cluster =require ("cluster");
+const logger = require('./logger')
 
 
 app.set('view engine', 'ejs')
@@ -64,6 +65,8 @@ app.get('/', async (req, res) => {
         res.render('login')
     }
 })
+
+
 app.use('/', registrar)
 app.use('/', login)
 app.use('/', datos)
@@ -75,7 +78,15 @@ app.use('/', numerosRandoms)
 app.get('/test', async (req, res) => {
     res.render("productos")
 })
+//ruta inexistentes usar el logger warning
+app.get('*', (req, res) => {
+    const { url, method } = req
+    
+    logger.warn(`Ruta ${method} ${url} no esta implementada`)
+    res.send(`Ruta ${method} ${url} no esta implementada`)
+})
 
+//errores lanzados por las apis de mensajes y productos, únicamente (error) con el logger error
 io.on("connection", async (socket) => {
     const mensajes = await mensajesMongoDB.getAll()
 
@@ -100,7 +111,7 @@ io.on("connection", async (socket) => {
 
             io.sockets.emit('mensajes', normalizado)
         } else {
-            console.log('Faltan completar campos')
+            logger.error(`Error en la api de mensajes, faltan campos`)
         }
     })
 
@@ -120,7 +131,9 @@ io.on("connection", async (socket) => {
 
             io.sockets.emit('productos', productos)
         }
-        else { console.log('Faltan completar campos') }
+        else { 
+        logger.error(`Error en la api de productos, faltan campos`)
+        }
     })
 
 
@@ -153,11 +166,9 @@ if (MODE === 'CLUSTER' && cluster.isMaster) {
 }
 else {
     httpServer.listen(PORT, () => {
-        console.log(`Servidor http escuchando en el puerto ${PORT}`);
+        logger.info(`Servidor http escuchando en el puerto ${PORT}`)
     })
     httpServer.on("error", error => console.log(`Error en servidor ${error}`))
 }
 
-//comando para ejecutar en la terminal
-//artillery quick -c 50 -n 20 "http://localhost:8080/info" > artillery_slow.txt
-//artillery quick -c 50 -n 20 "http://localhost:8080/info" > artillery_fast.txt
+

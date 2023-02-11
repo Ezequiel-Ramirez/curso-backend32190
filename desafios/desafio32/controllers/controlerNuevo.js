@@ -4,6 +4,16 @@ const dotenv = require('dotenv')
 const {fork} = require('child_process')
 const path = require('path')
 const os = require('os')
+const logger = require('../logger')
+/* 
+Ruta y método de todas las peticiones recibidas por el servidor (info)
+Ruta y método de las peticiones a rutas inexistentes en el servidor (warning)
+Errores lanzados por las apis de mensajes y productos, únicamente (error)
+
+Loggear todos los niveles a consola (info, warning y error)
+Registrar sólo los logs de warning a un archivo llamada warn.log
+Enviar sólo los logs de error a un archivo llamada error.log
+ */
 
 // Rutas de registro //
 const getRegistrar = async (req, res) => {
@@ -64,6 +74,7 @@ const getDatosProcess = async (req, res) => {
     const cpus = os.cpus().length
 
     if (req.session.nombre) {
+        logger.info('Se accedió a la ruta /info')
         res.render('data-process', {
             argumentos,
             plataforma,
@@ -77,6 +88,7 @@ const getDatosProcess = async (req, res) => {
     } else {
         req.session.destroy()
         res.redirect('/login')
+        logger.info('Se intentó acceder a la ruta /info sin estar logueado')
     }
 }
 
