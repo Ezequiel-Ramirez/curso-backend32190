@@ -154,6 +154,7 @@ const numCPUs = require('os').cpus().length
 
 if (MODE === 'CLUSTER' && cluster.isMaster) {
     console.log(`Master ${process.pid} is running`);
+    logger.info(`Master ${process.pid} is running`);
 
     // Fork workers.
     for (let i = 0; i < numCPUs; i++) {
@@ -162,13 +163,14 @@ if (MODE === 'CLUSTER' && cluster.isMaster) {
 
     cluster.on('exit', (worker, code, signal) => {
         console.log(`worker ${worker.process.pid} died`);
+        logger.info(`worker ${worker.process.pid} died`);
     });
 }
 else {
     httpServer.listen(PORT, () => {
         logger.info(`Servidor http escuchando en el puerto ${PORT}`)
     })
-    httpServer.on("error", error => console.log(`Error en servidor ${error}`))
+    httpServer.on("error", error => logger.error(`Error en servidor ${error}`))
 }
 
 
