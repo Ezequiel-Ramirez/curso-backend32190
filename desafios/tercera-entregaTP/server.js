@@ -27,7 +27,7 @@ app.set('view engine', 'ejs')
 app.use(cookieParser())
 app.use(session({
     store: MongoStore.create({
-        mongoUrl: process.env.MONGO_URL || "mongodb+srv://ezequiel:ezequiel@backendcodercurso.y3plhcv.mongodb.net/desafio28?retryWrites=true&w=majority",
+        mongoUrl: process.env.MONGO_URL || "mongodb+srv://ezequiel:ezequiel@backendcodercurso.y3plhcv.mongodb.net/TP3?retryWrites=true&w=majority",
         mongoOptions: advancedOptions
     }),
     secret: "coderhouse",

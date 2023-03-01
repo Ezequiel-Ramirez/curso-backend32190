@@ -21,6 +21,7 @@ const raiz = Router()
 const datosProcess = Router()
 const numerosRandoms = Router()
 const compression = require('compression')
+const fs = require('fs');
 
 //-----------------------------BCRYPT----------------------------------//
 function createHash(password) {
@@ -41,7 +42,10 @@ passport.use("register", new LocalStrategy({
     passReqToCallback: true,
 }, async (req, username, password, done) => {
     const usuario = await usuariosMongoDB.getAll(username);
-    const { direccion } = req.body;
+    const { direccion, codigo, telefono, email, edad, avatar } = req.body;
+    
+
+
     if (usuario) {
         return done(false);
     }
@@ -49,7 +53,11 @@ passport.use("register", new LocalStrategy({
     const newUser = {
         nombre: username,
         password: createHash(password),
-        direccion
+        direccion,
+        telefono: codigo + telefono,
+        email,
+        edad,
+        avatar
     };
 
     const usuarioGuardado = await usuariosMongoDB.guardarUsuario(newUser);

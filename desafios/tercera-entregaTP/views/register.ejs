@@ -11,6 +11,7 @@
                 role="form"
                 autocomplete="off"
             >
+                <label for="username">Nombre</label>
                 <div class="form-group">
                     <input
                         id="username"
@@ -21,7 +22,7 @@
                         required
                     />
                 </div>
-
+                <label for="password">Password</label>
                 <div class="form-group">
                     <input
                         id="password"
@@ -32,7 +33,7 @@
                         required
                     />
                 </div>
-
+                <label for="direccion">Direccion</label>
                 <div class="form-group">
                     <input
                         id="direccion"
@@ -40,6 +41,64 @@
                         placeholder="direccion"
                         class="form-control"
                         type="text"
+                        required
+                    />
+                </div>
+                <label for="codigo">Código de area y teléfono</label>
+                <div class="form-group d-flex">
+                    <select
+                        id="codigo"
+                        name="codigo"
+                        class="form-control col-2"
+                        required
+                    >
+                        <option value="54">+54 Argentina</option>
+                        <option value="55">+55 Brasil</option>
+                        <option value="56">+56 Chile</option>
+                        <option value="57">+57 Colombia</option>
+                        <option value="58">+58 Venezuela</option>
+                    </select>
+
+                    <input
+                        id="telefono"
+                        name="telefono"
+                        placeholder="telefono"
+                        class="form-control"
+                        type="text"
+                        required
+                    />
+                </div>
+                <label for="email">Email</label>
+                <div class="form-group">
+                    <input
+                        id="email"
+                        name="email"
+                        placeholder="email"
+                        class="form-control"
+                        type="email"
+                        required
+                    />
+                </div>
+                <label for="edad">Edad</label>
+                <div class="form-group">
+                    <input
+                        id="edad"
+                        name="edad"
+                        placeholder="fecha de nacimiento"
+                        class="form-control"
+                        type="number"
+                        required
+                    />
+                </div>
+                <label for="avatar">Avatar</label>
+                <div class="form-group">
+                    <!-- subir archivo de avatar -->
+                    <input
+                        id="avatar"
+                        name="avatar"
+                        placeholder="avatar"
+                        class="form-control"
+                        type="file"
                         required
                     />
                 </div>
