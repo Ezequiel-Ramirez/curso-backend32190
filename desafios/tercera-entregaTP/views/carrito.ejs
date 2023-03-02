@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Tercera Entrega TP</title>
+        <script src="https://cdn.jsdelivr.net/npm/normalizr@3.6.1/dist/normalizr.browser.min.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+            crossorigin="anonymous"
+        />
+    </head>
+    <body>
+        <div class="container mt-3">
+            <i>Bienvenido <%-user.nombre-%></i>
+            <i class="d-none" id="userMail"><%-user.email-%></i>
+            <!-- avatar -->
+            <img
+                src="<%-user.avatar-%>"
+                alt="avatar"
+                width="50px"
+                height="50px"
+            />
+            <br />
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/"> Home </a>
+                    </li>
+
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/info">
+                            Datos de variables
+                        </a>
+                    </li>
+
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/api/randoms">
+                            Números randoms en objeto
+                        </a>
+                    </li>
+
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/test">
+                            5 PRODUCTOS RANDOM
+                        </a>
+                    </li>
+
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/carrito"> Carrito </a>
+                    </li>
+
+                    <li class="nav-item active">
+                        <button
+                            class="btn btn-danger my-2 mr-auto"
+                            onclick="location.href='/logout'"
+                        >
+                            DESCONECTARSE
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <br />
+
+        <div class="container mt-3">
+            <div class="jumbotron">
+                <h1 class="display-4">Carrito de compras</h1>
+                <p class="lead">
+                    Aquí podrás ver los productos que has agregado al carrito
+                </p>
+                <hr class="my-4" />
+                <% if (productos.length == 0) {%>
+                <p>
+                    Si no has agregado ningún producto, no te preocupes, puedes
+                    hacerlo desde la página principal
+                </p>
+                <a class="btn btn-primary btn-lg" href="/" role="button"
+                    >Volver a la página principal</a
+                >
+                <%}%>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <h2>Productos agregados</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="container mt-3">
+            <div class="row">
+                <div class="col-12">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Imagen</th>
+                                <th scope="col">Producto</th>
+                                <th scope="col">Precio</th>
+                                <th scope="col">Cantidad</th>
+                                <th scope="col">Subtotal</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%for (let i = 0; i < productos.length; i++) {%>
+                            <tr>
+                                <td>
+                                    <img
+                                        src="<%-productos[i].foto-%>"
+                                        alt="imagen"
+                                        width="50px"
+                                        height="50px"
+                                    />
+                                </td>
+
+                                <td><%-productos[i].titulo-%></td>
+                                <td><%-productos[i].precio-%></td>
+                                <td><%-productos[i].quantity-%></td>
+                                <td>
+                                    <%-productos[i].precio *
+                                    productos[i].quantity-%>
+                                </td>
+                                <td>
+                                    <button
+                                        class="btn btn-danger"
+                                        onclick="location.href='/carrito/borrar/<%-productos[i].id-%>'"
+                                    >
+                                        Borrar
+                                    </button>
+                                </td>
+                            </tr>
+                            <%}%>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <script src="/main.js"></script>
+    </body>
+</html>

@@ -10,7 +10,8 @@ const {
     getLogout,
     getRaiz,
     getDatosProcess,
-    getNumerosRandom
+    getNumerosRandom, 
+    getCarrito
 } = require('../controllers/controlerNuevo')
 const { Router } = require('express')
 const registrar = Router()
@@ -20,6 +21,7 @@ const logout = Router()
 const raiz = Router()
 const datosProcess = Router()
 const numerosRandoms = Router()
+const carrito = Router()
 const compression = require('compression')
 const fs = require('fs');
 const path = require('path');
@@ -148,4 +150,7 @@ logout.get('/logout', getLogout)
 // Ruta Raiz //
 raiz.get('/', getRaiz)
 
-module.exports = { registrar, login, datos, logout, raiz, datosProcess, numerosRandoms };
+// Ruta Carrito //
+carrito.get('/carrito', getCarrito)
+
+module.exports = { registrar, login, datos, logout, raiz, datosProcess, numerosRandoms, carrito };

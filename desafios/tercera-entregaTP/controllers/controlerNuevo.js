@@ -1,19 +1,13 @@
 const ContenedorUsuarioMongoDB = require('../containers/containerUsuariosMongoDB')
+const ContenedorProductosMongoDB = require('../containers/containerMensajesMongoDB')
 const usuariosMongoDB = new ContenedorUsuarioMongoDB()
+const productosMongoDB = new ContenedorProductosMongoDB()
 const dotenv = require('dotenv')
 const { fork } = require('child_process')
 const path = require('path')
 const os = require('os')
 const logger = require('../logger')
-/* 
-Ruta y método de todas las peticiones recibidas por el servidor (info)
-Ruta y método de las peticiones a rutas inexistentes en el servidor (warning)
-Errores lanzados por las apis de mensajes y productos, únicamente (error)
 
-Loggear todos los niveles a consola (info, warning y error)
-Registrar sólo los logs de warning a un archivo llamada warn.log
-Enviar sólo los logs de error a un archivo llamada error.log
- */
 
 // Rutas de registro //
 const getRegistrar = async (req, res) => {
@@ -119,6 +113,26 @@ const getRaiz = async (req, res) => {
     res.redirect('/datos')
 }
 
+//Ruta carrito //
+const getCarrito = async (req, res) => {
+    const nombre = req.session.nombre
+    const usuarios = await usuariosMongoDB.getAll1()
+
+    if (req.session.nombre) {
+        let user = await usuarios.find(usuario => usuario.nombre == nombre)
+        
+        const productos = await productosMongoDB.getAllProductosByIdUsuario(user.email)
+        res.render('carrito', {
+            user,
+            productos
+        })
+    } else {
+        req.session.destroy()
+        res.redirect('/login')
+    }
+}
+
+
 module.exports = {
     getRegistrar,
     getLogin,
@@ -127,5 +141,6 @@ module.exports = {
     getLogout,
     getRaiz,
     getDatosProcess,
-    getNumerosRandom
+    getNumerosRandom,
+    getCarrito
 };

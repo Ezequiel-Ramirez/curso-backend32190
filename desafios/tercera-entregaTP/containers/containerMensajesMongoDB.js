@@ -179,6 +179,18 @@ class ContenedorMensajesMongoDB {
         }
     }
 
+    async getAllProductosByIdUsuario(idUsuario) {
+        try {
+            await connect();
+            const productos = await models.find({ idUsuario: idUsuario }, { _id: 0, __v: 0 });
+            return productos
+        } catch (error) {
+            console.log(error)
+            logger.error('No hay productos guardados')
+            return 'No hay productos guardados'
+        }
+    }
+
     async deleteById(id2) {
         try {
             await connect()
