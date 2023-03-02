@@ -191,10 +191,11 @@ class ContenedorMensajesMongoDB {
         }
     }
 
-    async deleteProductoById(id2) {
+    async deleteProductoById(product) {
         try {
             await connect()
-            const producto = await models.findByIdAndDelete(id2)
+           //busco el producto por el titulo y el idUsuario
+            const producto = await models.findOneAndDelete({ titulo: product.titulo, idUsuario: product.idUsuario })
             return producto
             
         } catch (error) {
@@ -203,7 +204,6 @@ class ContenedorMensajesMongoDB {
             return "Fallo la lectura"
         }
     }
-
 
     async deleteById(id2) {
         try {

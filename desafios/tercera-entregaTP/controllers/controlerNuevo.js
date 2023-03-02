@@ -139,12 +139,11 @@ const deleteProductoCarrito = async (req, res) => {
     const usuarios = await usuariosMongoDB.getAll1()
 
     if (req.session.nombre) {
-     console.log(req.params.id)
+
         let user = await usuarios.find(usuario => usuario.nombre == nombre)
         const productos = await productosMongoDB.getAllProductosByIdUsuario(user.email)
-      console.log(productos)
         const producto = await productos.find(producto => producto.codigo == req.params.id)
-        await productosMongoDB.deleteProductoById(producto.codigo)
+        await productosMongoDB.deleteProductoById(producto)
         res.redirect('/carrito')
     } else {
         req.session.destroy()
