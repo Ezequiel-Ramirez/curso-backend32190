@@ -54,7 +54,8 @@ class ContenedorMensajesMongoDB {
                 precio: faker.commerce.price(),
                 stock: faker.commerce.price(),
                 foto: faker.image.abstract(),
-                quantity: faker.datatype.number()
+                quantity: faker.datatype.number(),
+                idUsuario: faker.datatype.number()
             }
         } catch (error) {
             console.log(error)
@@ -63,10 +64,11 @@ class ContenedorMensajesMongoDB {
     }
     async saveProductos(producto) {
         await connect()
-        //si ya esta el producto en la base de datos, no lo agrega pero agrega otra unidad al quantity
-        const productoEncontrado = await models.findOne({ titulo: producto.titulo })
+
+        //si ya esta el producto en la base de datos, y coincide el idUsuario, sumarle la cantidad de quantity sino agregarlo
+        const productoEncontrado = await models.findOne({ titulo: producto.titulo, idUsuario: producto.idUsuario })
         if (productoEncontrado) {
-            const productoActualizado = await models.findOneAndUpdate({ titulo: producto.titulo }, { $inc: { quantity: producto.quantity } }, { new: true })
+            const productoActualizado = await models.findOneAndUpdate({ titulo: producto.titulo, idUsuario: producto.idUsuario }, { $inc: { quantity: producto.quantity } }, { new: true })
             return productoActualizado
         } else {
             const productoNuevo = new models(producto)

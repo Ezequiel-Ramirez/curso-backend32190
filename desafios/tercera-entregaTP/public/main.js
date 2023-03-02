@@ -134,6 +134,7 @@ function addMessage() {
 
 //--------------funcion para agregar productos al carrito y los guarda y los envia al seridor-----------------//
 function addCart(id) {
+  const userMail = document.getElementById("userMail").innerText
   fetch(`https://fakestoreapi.com/products/${id}`)
     .then(res => res.json())
     .then(data => {
@@ -144,7 +145,8 @@ function addCart(id) {
         precio: data.price,
         foto: data.image,
         stock: data?.stock || 10,
-        quantity: 1
+        quantity: 1,
+        idUsuario: userMail
       }
 
       socket.emit('new-product', producto)
@@ -179,11 +181,11 @@ function getProductList() {
         </table>`
 
       document.getElementById("productList").innerHTML = html
+      
+
     })
 }
 
 getProductList()
 
 //--------------------------------------------------------------------//
-
-

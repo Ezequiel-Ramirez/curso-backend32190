@@ -1,6 +1,9 @@
 //Class containerMensajesMongoDB.js
 const ContenedorMensajesMongoDB = require('./containers/containerMensajesMongoDB')
+const ContenedorUsuariosMongoDB = require('./containers/containerUsuariosMongoDB')
 const mensajesMongoDB = new ContenedorMensajesMongoDB()
+const usuariosMongoDB = new ContenedorUsuariosMongoDB()
+const { modelU } = require('./models/usuarios')
 
 //SERVIDOR
 const dotenv = require('dotenv')
@@ -18,7 +21,7 @@ const app = express()
 const httpServer = new HttpServer(app)
 const io = new IOServer(httpServer)
 const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true }
-const cluster =require ("cluster");
+const cluster = require("cluster");
 const logger = require('./logger')
 const fileUpload = require('express-fileupload')
 const path = require('path');
@@ -46,12 +49,13 @@ app.use(passport.initialize())
 app.use(passport.session())
 app.use(fileUpload())
 
-
-
+let userName = ""
 
 app.use((req, res, next) => {
     req.isAuthenticated = () => {
         if (req.session.nombre) {
+            //lo guardo en una variable para que no se ejecute cada vez que se llama a la funcion
+            userName = req.session.nombre
             return true
         }
         return false
@@ -72,7 +76,6 @@ app.get('/', async (req, res) => {
     }
 })
 
-
 app.use('/', registrar)
 app.use('/', login)
 app.use('/', datos)
@@ -87,11 +90,10 @@ app.get('/test', async (req, res) => {
 //ruta inexistentes usar el logger warning
 app.get('*', (req, res) => {
     const { url, method } = req
-    
+
     logger.warn(`Ruta ${method} ${url} no esta implementada`)
     res.send(`Ruta ${method} ${url} no esta implementada`)
 })
-
 //errores lanzados por las apis de mensajes y productos, únicamente (error) con el logger error
 io.on("connection", async (socket) => {
     const mensajes = await mensajesMongoDB.getAll()
@@ -123,23 +125,21 @@ io.on("connection", async (socket) => {
 
     let productos = await mensajesMongoDB.getAllProductos()
 
+
     socket.emit('productos', productos)
 
     socket.on('new-product', async (data) => {
         let todosProductos = data
 
-        if (data.titulo && data.descripcion && data.codigo && data.precio && data.foto && data.stock && data.quantity) {
+        if (data.titulo && data.descripcion && data.codigo && data.precio && data.foto && data.stock && data.quantity && data.idUsuario) {
             await mensajesMongoDB.saveProductos(todosProductos)
 
-            console.log('Articulos Almacenados')
-
             const productos = await mensajesMongoDB.getAllProductos()
-            console.log('productosMongo', productos)
 
             io.sockets.emit('productos', productos)
         }
-        else { 
-        logger.error(`Error en la api de productos, faltan campos`)
+        else {
+            logger.error(`Error en la api de productos, faltan campos`)
         }
     })
 
@@ -179,5 +179,3 @@ else {
     })
     httpServer.on("error", error => logger.error(`Error en servidor ${error}`))
 }
-
-
