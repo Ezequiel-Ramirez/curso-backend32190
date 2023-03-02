@@ -22,6 +22,7 @@ const datosProcess = Router()
 const numerosRandoms = Router()
 const compression = require('compression')
 const fs = require('fs');
+const path = require('path');
 
 //-----------------------------BCRYPT----------------------------------//
 function createHash(password) {
@@ -42,13 +43,8 @@ passport.use("register", new LocalStrategy({
     passReqToCallback: true,
 }, async (req, username, password, done) => {
     const usuario = await usuariosMongoDB.getAll(username);
-    const { direccion, codigo, telefono, email, edad, avatar } = req.body;
-    
+    const { direccion, codigo, telefono, email, edad } = req.body;
 
-
-    if (usuario) {
-        return done(false);
-    }
 
     const newUser = {
         nombre: username,
@@ -57,11 +53,49 @@ passport.use("register", new LocalStrategy({
         telefono: codigo + telefono,
         email,
         edad,
-        avatar
+
     };
 
-    const usuarioGuardado = await usuariosMongoDB.guardarUsuario(newUser);
-    done(null, usuarioGuardado);
+    // Si hay un archivo de imagen, lo guardamos
+    if (req.files && req.files.avatar) {
+        const avatarFile = req.files.avatar;
+        //usar el username para el nombre del archivo
+        const avatarName = `${email}${path.extname(avatarFile.name)}`;
+        const avatarPath = path.join(__dirname, '..', 'public', 'avatars', avatarName);
+
+        if (!fs.existsSync(path.join(__dirname, '..', 'public', 'avatars'))) {
+            fs.mkdirSync(path.join(__dirname, '..', 'public', 'avatars'));
+        }
+
+        // Guardamos la imagen en la carpeta pública
+        avatarFile.mv(avatarPath, async (err) => {
+            if (err) {
+                console.error('Error al guardar la imagen:', err);
+                return done(err);
+            }
+
+            // Agregamos la ruta de la imagen al objeto usuario
+            newUser.avatar = `/avatars/${avatarName}`;
+
+            try {
+                // Guardamos el objeto usuario en MongoDB
+                const usuarioGuardado = await usuariosMongoDB.guardarUsuario(newUser);
+                done(null, usuarioGuardado);
+            } catch (err) {
+                console.error('Error al guardar el usuario en la base de datos:', err);
+                done(err);
+            }
+        });
+    } else {
+        try {
+            // Si no hay archivo de imagen, guardamos solo los datos del usuario
+            const usuarioGuardado = await usuariosMongoDB.guardarUsuario(newUser);
+            done(null, usuarioGuardado);
+        } catch (err) {
+            console.error('Error al guardar el usuario en la base de datos:', err);
+            done(err);
+        }
+    }
 }));
 
 // Login //

@@ -4,7 +4,7 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>WebSocket</title>
+        <title>Tercera Entrega TP</title>
         <script src="https://cdn.jsdelivr.net/npm/normalizr@3.6.1/dist/normalizr.browser.min.js"></script>
         <script src="/socket.io/socket.io.js"></script>
         <link
@@ -16,47 +16,53 @@
     </head>
     <body>
         <div class="container mt-3">
-            <div
-                class="estilo d-flex justify-content-between p-3"
-                style="background-color: green; color: white"
-            >
-                <h2 style="text-align: center">
-                    <i>Bienvenido <%-datos-%></i>
-                </h2>
-                <button
-                    class="btn btn-danger my-2"
-                    onclick="location.href='/logout'"
-                >
-                    DESCONECTARSE
-                </button>
-            </div>
-        </div>
-        <div class="container mt-3 ml-5">
-            <div class="row">
-                <button class="btn btn-primary" onclick="location.href='/info'">
-                    Datos de variables
-                </button>
-            </div>
-            <div class="row">
-                <button class="btn btn-primary" onclick="location.href='/api/randoms'">
-                    Números randoms en objeto
-                </button>
-            </div>
+            <i>Bienvenido <%-user.nombre-%></i>
+            <!-- avatar -->
+            <img
+                src="<%-user.avatar-%>"
+                alt="avatar"
+                width="50px"
+                height="50px"
+            />
+            <br />
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/"> Home </a>
+                    </li>
+
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/info">
+                            Datos de variables
+                        </a>
+                    </li>
+
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/api/randoms">
+                            Números randoms en objeto
+                        </a>
+                    </li>
+
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/test">
+                            5 PRODUCTOS RANDOM
+                        </a>
+                    </li>
+
+                    <li class="nav-item active">
+                        <button
+                            class="btn btn-danger my-2 mr-auto"
+                            onclick="location.href='/logout'"
+                        >
+                            DESCONECTARSE
+                        </button>
+                    </li>
+                </ul>
+            </nav>
         </div>
 
         <br />
-        <div class="container-fluid h-100">
-            <div class="row w-100 align-items-center">
-                <div class="col text-center">
-                    <button
-                        class="btn btn-warning regular-button"
-                        onclick="location.href='/test'"
-                    >
-                        5 PRODUCTOS RANDOM
-                    </button>
-                </div>
-            </div>
-        </div>
+        
         <div class="container mt-3">
             <div class="jumbotron">
                 <%- include('./formulario')-%>

@@ -20,6 +20,8 @@ const io = new IOServer(httpServer)
 const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true }
 const cluster =require ("cluster");
 const logger = require('./logger')
+const fileUpload = require('express-fileupload')
+const path = require('path');
 
 
 app.set('view engine', 'ejs')
@@ -37,10 +39,14 @@ app.use(session({
     cookie: { maxAge: 60000 }
 }))
 app.use(express.static("./public"))
+app.use('/avatars', express.static(path.join(__dirname, 'public', 'avatars')));
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(passport.initialize())
 app.use(passport.session())
+app.use(fileUpload())
+
+
 
 
 app.use((req, res, next) => {

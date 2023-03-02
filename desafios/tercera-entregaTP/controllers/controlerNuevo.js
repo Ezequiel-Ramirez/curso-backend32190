@@ -1,7 +1,7 @@
 const ContenedorUsuarioMongoDB = require('../containers/containerUsuariosMongoDB')
 const usuariosMongoDB = new ContenedorUsuarioMongoDB()
 const dotenv = require('dotenv')
-const {fork} = require('child_process')
+const { fork } = require('child_process')
 const path = require('path')
 const os = require('os')
 const logger = require('../logger')
@@ -51,8 +51,7 @@ const getDatos = async (req, res) => {
         let user = await usuarios.find(usuario => usuario.nombre == nombre)
         req.session.contador++
         res.render('datos', {
-            datos: user.nombre,
-            direccion: user.direccion,
+            user,
             contador: req.session.contador
         })
     } else {
