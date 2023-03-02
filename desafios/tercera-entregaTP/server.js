@@ -11,7 +11,7 @@ const express = require('express')
 const session = require('express-session')
 const cookieParser = require("cookie-parser")
 const MongoStore = require("connect-mongo")
-const { registrar, login, datos, logout, raiz, datosProcess, numerosRandoms, carrito } = require('./routers/routers');
+const { registrar, login, datos, logout, raiz, datosProcess, numerosRandoms, carrito, deleteProducto } = require('./routers/routers');
 const parseArgs = require('yargs/yargs')
 
 const { Server: HttpServer } = require('http')
@@ -84,6 +84,8 @@ app.use('/', raiz)
 app.use('/', datosProcess)
 app.use('/', numerosRandoms)
 app.use('/', carrito)
+app.use('/', deleteProducto)
+
 
 app.get('/test', async (req, res) => {
     res.render("productos")

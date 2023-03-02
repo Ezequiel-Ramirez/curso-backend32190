@@ -132,6 +132,27 @@ const getCarrito = async (req, res) => {
     }
 }
 
+//Ruta de eliminar producto del carrito //
+const deleteProductoCarrito = async (req, res) => {
+    
+    const nombre = req.session.nombre
+    const usuarios = await usuariosMongoDB.getAll1()
+
+    if (req.session.nombre) {
+     console.log(req.params.id)
+        let user = await usuarios.find(usuario => usuario.nombre == nombre)
+        const productos = await productosMongoDB.getAllProductosByIdUsuario(user.email)
+      console.log(productos)
+        const producto = await productos.find(producto => producto.codigo == req.params.id)
+        await productosMongoDB.deleteProductoById(producto.codigo)
+        res.redirect('/carrito')
+    } else {
+        req.session.destroy()
+        res.redirect('/login')
+    }
+}
+
+
 
 module.exports = {
     getRegistrar,
@@ -142,5 +163,6 @@ module.exports = {
     getRaiz,
     getDatosProcess,
     getNumerosRandom,
-    getCarrito
+    getCarrito,
+    deleteProductoCarrito
 };

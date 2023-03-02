@@ -191,6 +191,20 @@ class ContenedorMensajesMongoDB {
         }
     }
 
+    async deleteProductoById(id2) {
+        try {
+            await connect()
+            const producto = await models.findByIdAndDelete(id2)
+            return producto
+            
+        } catch (error) {
+            console.log(`Fallo la lectura `)
+            logger.error(`Fallo la lectura `)
+            return "Fallo la lectura"
+        }
+    }
+
+
     async deleteById(id2) {
         try {
             await connect()
