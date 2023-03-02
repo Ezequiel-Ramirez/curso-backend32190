@@ -9,6 +9,7 @@ const schemaProductos = new mongoose.Schema({
     precio: Number,
     foto: String,
     stock: Number,
+    quantity: Number,
 })
 
 const models = mongoose.model(collectionProductos, schemaProductos)

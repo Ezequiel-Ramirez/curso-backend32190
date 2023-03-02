@@ -128,12 +128,13 @@ io.on("connection", async (socket) => {
     socket.on('new-product', async (data) => {
         let todosProductos = data
 
-        if (data.titulo && data.descripcion && data.codigo && data.precio && data.foto && data.stock) {
+        if (data.titulo && data.descripcion && data.codigo && data.precio && data.foto && data.stock && data.quantity) {
             await mensajesMongoDB.saveProductos(todosProductos)
 
             console.log('Articulos Almacenados')
 
             const productos = await mensajesMongoDB.getAllProductos()
+            console.log('productosMongo', productos)
 
             io.sockets.emit('productos', productos)
         }

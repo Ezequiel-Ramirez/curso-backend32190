@@ -116,7 +116,7 @@ function addMessage() {
 
 //---------------Funcion guardar productos --------------------------//
 // Toma los valores de los imput, los guarda y los envia al servidor //
-function addProduct() {
+/* function addProduct() {
 
   const producto = {
     titulo: document.getElementById("titulo").value,
@@ -129,5 +129,61 @@ function addProduct() {
 
   socket.emit('new-product', producto)
   return false
+} */
+//--------------------------------------------------------------------//
+
+//--------------funcion para agregar productos al carrito y los guarda y los envia al seridor-----------------//
+function addCart(id) {
+  fetch(`https://fakestoreapi.com/products/${id}`)
+    .then(res => res.json())
+    .then(data => {
+      let producto = {
+        codigo: data.id,
+        titulo: data.title,
+        descripcion: data.description,
+        precio: data.price,
+        foto: data.image,
+        stock: data?.stock || 10,
+        quantity: 1
+      }
+
+      socket.emit('new-product', producto)
+      return false
+    })
 }
 //--------------------------------------------------------------------//
+
+//---------------fetch a productos desde api https://fakestoreapi.com/products?limit=10' y los renderizo en id 'productList' --------------------------//
+
+function getProductList() {
+  fetch('https://fakestoreapi.com/products?limit=10')
+    .then(res => res.json())
+    .then(data => {
+      let html = data.map(prod => {
+        return `<tr> 
+                <td>${prod.id}</td>               
+                <td>${prod.title}</td>
+                <td>${prod.description}</td>
+                <td>${prod.category}</td>
+                <td>${prod.price}</td>                
+                <td><img style="width: 80px;" src="${prod.image}", alt="sin imagen"></td>
+                <td colspan="6"><button class="btn btn-success" onclick="addCart(${prod.id})">Agregar al carrito</button></td>
+              </tr>`
+      }).join(" ")
+
+      html = `
+      <h1 style="color:crimson; text-align: center"> Lista de Productos Random</h1>
+        <table class="table table-dark">
+          <tr style="color: yellow;"> <th>ID</th><th>Titulo</th> <th>Descripcion</th> <th>Categoria</th> <th>Precio</th> <th>Imagen</th></tr>
+          ${html}    
+        </table>`
+
+      document.getElementById("productList").innerHTML = html
+    })
+}
+
+getProductList()
+
+//--------------------------------------------------------------------//
+
+

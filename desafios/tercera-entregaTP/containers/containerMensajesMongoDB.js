@@ -22,8 +22,8 @@ class ContenedorMensajesMongoDB {
             };
             //SCHEMAS
             const authorSchema = new schema.Entity("author", {}, { idAttribute: "id" });
-            const messageSchema = new schema.Entity("message", {author: authorSchema});
-            const messagesSchema = new schema.Entity("messages", {messages: [messageSchema]});
+            const messageSchema = new schema.Entity("message", { author: authorSchema });
+            const messagesSchema = new schema.Entity("messages", { messages: [messageSchema] });
             const messagesNorm = normalize(mensajes, messagesSchema);
             const messageDes = denormalize(messagesNorm.result, messagesSchema, messagesNorm.entities)
             const original = JSON.stringify(mensajes).length
@@ -54,6 +54,7 @@ class ContenedorMensajesMongoDB {
                 precio: faker.commerce.price(),
                 stock: faker.commerce.price(),
                 foto: faker.image.abstract(),
+                quantity: faker.datatype.number()
             }
         } catch (error) {
             console.log(error)
@@ -61,11 +62,17 @@ class ContenedorMensajesMongoDB {
         }
     }
     async saveProductos(producto) {
-        console.log(producto)
         await connect()
-        const prodNuevo = new models(producto)
-        const prodGuardado = prodNuevo.save()
-        return prodGuardado
+        //si ya esta el producto en la base de datos, no lo agrega pero agrega otra unidad al quantity
+        const productoEncontrado = await models.findOne({ titulo: producto.titulo })
+        if (productoEncontrado) {
+            const productoActualizado = await models.findOneAndUpdate({ titulo: producto.titulo }, { $inc: { quantity: producto.quantity } }, { new: true })
+            return productoActualizado
+        } else {
+            const productoNuevo = new models(producto)
+            const productoGuardado = productoNuevo.save()
+            return productoGuardado
+        }
     }
 
     async save(mensaje) {
