@@ -174,7 +174,7 @@ function getProductList() {
       }).join(" ")
 
       html = `
-      <h1 style="color:crimson; text-align: center"> Lista de Productos Random</h1>
+      <h1 style="color:crimson; text-align: center"> Lista de Productos desde Api</h1>
         <table class="table table-dark">
           <tr style="color: yellow;"> <th>ID</th><th>Titulo</th> <th>Descripcion</th> <th>Categoria</th> <th>Precio</th> <th>Imagen</th></tr>
           ${html}    
@@ -189,3 +189,55 @@ function getProductList() {
 getProductList()
 
 //--------------------------------------------------------------------//
+
+//---------------fetch a productos desde api https://fakestoreapi.com pero con filtro por categoria y los renderizo en id 'productList' --------------------------//
+
+function getProductListByCategory(category) {
+  fetch(`https://fakestoreapi.com/products/category/${category}`)
+    .then(res => res.json())
+    .then(data => {
+      let html = data.map(prod => {
+        return `<tr> 
+                <td>${prod.id}</td>               
+                <td>${prod.title}</td>
+                <td>${prod.description}</td>
+                <td>${prod.category}</td>
+                <td>${prod.price}</td>                
+                <td><img style="width: 80px;" src="${prod.image}", alt="sin imagen"></td>
+                <td colspan="6"><button class="btn btn-success" onclick="addCart(${prod.id})">Agregar al carrito</button></td>
+              </tr>`
+      }).join(" ")
+
+      html = `
+      <h1 style="color:crimson; text-align: center"> Lista de Productos por Categoría</h1>
+        <table class="table table-dark">
+          <tr style="color: yellow;"> <th>ID</th><th>Titulo</th> <th>Descripcion</th> <th>Categoria</th> <th>Precio</th> <th>Imagen</th></tr>
+          ${html}    
+        </table>`
+
+      document.getElementById("productList").innerHTML = html
+      
+
+    })
+}
+
+//--------------------------------------------------------------------//
+
+//si hace click en el boton de categoria, ejecuta la funcion getProductListByCategory con el id del boton como parametro
+document.getElementById("category1").addEventListener("click", (e) => {
+  getProductListByCategory(e.target.id)
+})
+document.getElementById("category2").addEventListener("click", (e) => {
+  getProductListByCategory(e.target.id)
+})
+document.getElementById("category3").addEventListener("click", (e) => {
+  getProductListByCategory(e.target.id)
+})
+
+//a los li con id category1, category2 y category3 le agrego el estilo cursor pointer
+document.getElementById("category1").style.cursor = "pointer"
+document.getElementById("category2").style.cursor = "pointer"
+document.getElementById("category3").style.cursor = "pointer"
+
+
+
