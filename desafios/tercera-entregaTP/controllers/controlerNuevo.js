@@ -23,7 +23,13 @@ const transporter = nodemailer.createTransport({
         pass: 'bMFwZuqeU3X4cDPN2v'
     }
 });
+//---------------------------------------------------------------//
 
+//-------------------------------twilio-----------------//
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const client = require('twilio')(accountSid, authToken);
+//-----------------------------------------------------//
 
 // Rutas de registro //
 const getRegistrar = async (req, res) => {
@@ -185,6 +191,7 @@ const getCheckout = async (req, res) => {
             from: 'No-Replay <susie53@ethereal.email>',
             to: 'Dear Developer <susie53@ethereal.email>', /* user.email en realidad */
             subject: `Nuevo pedido de ${user.nombre}, email: ${user.email}`,
+            text: `Se ha realizado un nuevo pedido. Los productos comprados son: ${productos.map(producto => producto.titulo).join(', ')}`,
             html: `
                 <h1>Compra realizada</h1>
                 <p>Gracias por su compra</p>
@@ -205,6 +212,16 @@ const getCheckout = async (req, res) => {
             VARIABLE_GLOBAL_ALL_MAILS.push(nodemailer.getTestMessageUrl(info));
             console.log('VARIABLE_GLOBAL_ALL_MAILS', VARIABLE_GLOBAL_ALL_MAILS)
         });
+
+        //envio mismo mensaje por whatsapp
+        client.messages
+            .create({
+                body: `Se ha realizado un nuevo pedido. Los productos comprados son: ${productos.map(producto => producto.titulo).join(', ')}`,
+                from: 'whatsapp:+14155238886',
+                to: 'whatsapp:+5491154547386'
+            })
+            .then(message => console.log('Whatsapp enviado: ', message.sid))
+
 
         //elimino los productos del carrito
         for (let i = 0; i < productos.length; i++) {
