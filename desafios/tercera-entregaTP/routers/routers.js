@@ -12,7 +12,8 @@ const {
     getDatosProcess,
     getNumerosRandom,
     getCarrito,
-    deleteProductoCarrito
+    deleteProductoCarrito,
+    getCheckout,
 } = require('../controllers/controlerNuevo')
 const { Router } = require('express')
 const registrar = Router()
@@ -24,6 +25,7 @@ const datosProcess = Router()
 const numerosRandoms = Router()
 const carrito = Router()
 const deleteProducto = Router()
+const checkout = Router()
 const compression = require('compression')
 const fs = require('fs');
 const path = require('path');
@@ -198,4 +200,7 @@ carrito.get('/carrito', getCarrito)
 // Ruta Eliminar Producto del Carrito con id params //
 deleteProducto.get('/carrito/borrar/:id', deleteProductoCarrito)
 
-module.exports = { registrar, login, datos, logout, raiz, datosProcess, numerosRandoms, carrito, deleteProducto };
+// Ruta checkout //
+checkout.get('/checkout', getCheckout)
+
+module.exports = { registrar, login, datos, logout, raiz, datosProcess, numerosRandoms, carrito, deleteProducto, checkout };

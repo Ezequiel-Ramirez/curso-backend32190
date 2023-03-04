@@ -7,6 +7,22 @@ const { fork } = require('child_process')
 const path = require('path')
 const os = require('os')
 const logger = require('../logger')
+const nodemailer = require("nodemailer");
+dotenv.config();
+
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
+//-----------------------------NODEMAILER--------------------------//
+let VARIABLE_GLOBAL_ALL_MAILS = [];
+
+const transporter = nodemailer.createTransport({
+    host: 'smtp.ethereal.email',
+    port: 587,
+    auth: {
+        user: 'susie53@ethereal.email',
+        pass: 'bMFwZuqeU3X4cDPN2v'
+    }
+});
 
 
 // Rutas de registro //
@@ -120,7 +136,7 @@ const getCarrito = async (req, res) => {
 
     if (req.session.nombre) {
         let user = await usuarios.find(usuario => usuario.nombre == nombre)
-        
+
         const productos = await productosMongoDB.getAllProductosByIdUsuario(user.email)
         res.render('carrito', {
             user,
@@ -134,7 +150,7 @@ const getCarrito = async (req, res) => {
 
 //Ruta de eliminar producto del carrito //
 const deleteProductoCarrito = async (req, res) => {
-    
+
     const nombre = req.session.nombre
     const usuarios = await usuariosMongoDB.getAll1()
 
@@ -151,6 +167,59 @@ const deleteProductoCarrito = async (req, res) => {
     }
 }
 
+//Ruta para checkout con los productos del carrito  y datos del usuario//
+const getCheckout = async (req, res) => {
+    const nombre = req.session.nombre
+    const usuarios = await usuariosMongoDB.getAll1()
+
+    if (req.session.nombre) {
+        let user = await usuarios.find(usuario => usuario.nombre == nombre)
+        const productos = await productosMongoDB.getAllProductosByIdUsuario(user.email)
+        res.render('checkout', {
+            user,
+            productos
+        })
+
+        //envio de mails
+        const mailOptions = {
+            from: 'No-Replay <susie53@ethereal.email>',
+            to: 'Dear Developer <susie53@ethereal.email>', /* user.email en realidad */
+            subject: `Nuevo pedido de ${user.nombre}, email: ${user.email}`,
+            html: `
+                <h1>Compra realizada</h1>
+                <p>Gracias por su compra</p>
+                <p>Los productos comprados son:</p>
+                <ul>
+                    ${productos.map(producto => `<li>${producto.titulo}</li>`).join('')}
+                </ul>
+            `
+        }
+        transporter.sendMail(mailOptions, (err, info) => {
+            if (err) {
+                console.error('Error al enviar el mail:', err);
+                return;
+            }
+            console.log('Mail enviado correctamente', info.messageId);
+            console.log('URL del mail:', nodemailer.getTestMessageUrl(info));
+            //guardar en variable global el email de prueba
+            VARIABLE_GLOBAL_ALL_MAILS.push(nodemailer.getTestMessageUrl(info));
+            console.log('VARIABLE_GLOBAL_ALL_MAILS', VARIABLE_GLOBAL_ALL_MAILS)
+        });
+
+        //elimino los productos del carrito
+        for (let i = 0; i < productos.length; i++) {
+            await productosMongoDB.deleteProductoById(productos[i])
+        }
+
+
+    } else {
+        req.session.destroy()
+        res.redirect('/login')
+    }
+}
+
+
+
 
 
 module.exports = {
@@ -163,5 +232,6 @@ module.exports = {
     getDatosProcess,
     getNumerosRandom,
     getCarrito,
-    deleteProductoCarrito
+    deleteProductoCarrito,
+    getCheckout
 };
