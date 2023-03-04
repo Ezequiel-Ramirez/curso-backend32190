@@ -10,7 +10,7 @@ const {
     getLogout,
     getRaiz,
     getDatosProcess,
-    getNumerosRandom, 
+    getNumerosRandom,
     getCarrito,
     deleteProductoCarrito
 } = require('../controllers/controlerNuevo')
@@ -27,6 +27,11 @@ const deleteProducto = Router()
 const compression = require('compression')
 const fs = require('fs');
 const path = require('path');
+const nodemailer = require("nodemailer");
+const dotenv = require('dotenv');
+dotenv.config();
+
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 //-----------------------------BCRYPT----------------------------------//
 function createHash(password) {
@@ -38,6 +43,17 @@ function isValidPassword(user, password) {
 }
 //--------------------------------------------------------------------//
 
+//-----------------------------NODEMAILER--------------------------//
+let VARIABLE_GLOBAL_ALL_MAILS = [];
+
+const transporter = nodemailer.createTransport({
+    host: 'smtp.ethereal.email',
+    port: 587,
+    auth: {
+        user: 'susie53@ethereal.email',
+        pass: 'bMFwZuqeU3X4cDPN2v'
+    }
+});
 
 //----------------------------PASSPORT LOCAL--------------------------//
 
@@ -49,7 +65,6 @@ passport.use("register", new LocalStrategy({
     const usuario = await usuariosMongoDB.getAll(username);
     const { direccion, codigo, telefono, email, edad } = req.body;
 
-
     const newUser = {
         nombre: username,
         password: createHash(password),
@@ -57,7 +72,6 @@ passport.use("register", new LocalStrategy({
         telefono: codigo + telefono,
         email,
         edad,
-
     };
 
     // Si hay un archivo de imagen, lo guardamos
@@ -85,6 +99,32 @@ passport.use("register", new LocalStrategy({
                 // Guardamos el objeto usuario en MongoDB
                 const usuarioGuardado = await usuariosMongoDB.guardarUsuario(newUser);
                 done(null, usuarioGuardado);
+
+                // Enviamos el mail de bienvenida
+                const mailOptions = {
+                    from: 'No-Replay <susie53@ethereal.email>',
+                    to: 'Dear Developer <susie53@ethereal.email>',
+                    subject: 'Nuevo registro​',
+                    text: `Bienvenido ${username}!, gracias por registrarse, ya puede loguearse y hacer su compra. Saludos, Tienda Online`,
+                    html: `
+                    <h1 style="color: #5e9ca0;">Bienvenido ${username}!</h1>
+                    <p>Gracias por registrarse, ya puede loguearse y hacer su compra.</p>
+                    <p>Saludos, Tienda Online</p>
+                    `
+                };
+
+                transporter.sendMail(mailOptions, (err, info) => {
+                    if (err) {
+                        console.error('Error al enviar el mail:', err);
+                        return;
+                    }
+                    console.log('Email enviado:', info.messageId);
+                    console.log('URL del email:', nodemailer.getTestMessageUrl(info));
+                    //guardar en variable global el email de prueba
+                    VARIABLE_GLOBAL_ALL_MAILS.push(nodemailer.getTestMessageUrl(info));
+                    console.log('VARIABLE_GLOBAL_ALL_MAILS', VARIABLE_GLOBAL_ALL_MAILS)
+                });
+
             } catch (err) {
                 console.error('Error al guardar el usuario en la base de datos:', err);
                 done(err);
