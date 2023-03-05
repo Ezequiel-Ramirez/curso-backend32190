@@ -122,7 +122,6 @@ const getNumerosRandom = async (req, res) => {
     });
 };
 
-
 // Ruta de logout //
 const getLogout = async (req, res) => {
     req.logout(err => {
@@ -218,26 +217,20 @@ const getCheckout = async (req, res) => {
             .create({
                 body: `Se ha realizado un nuevo pedido. Los productos comprados son: ${productos.map(producto => producto.titulo).join(', ')}`,
                 from: 'whatsapp:+14155238886',
-                to: 'whatsapp:+5491154547386'
+                to: 'whatsapp:' + '+' + user.telefono
             })
             .then(message => console.log('Whatsapp enviado: ', message.sid))
-
 
         //elimino los productos del carrito
         for (let i = 0; i < productos.length; i++) {
             await productosMongoDB.deleteProductoById(productos[i])
         }
 
-
     } else {
         req.session.destroy()
         res.redirect('/login')
     }
 }
-
-
-
-
 
 module.exports = {
     getRegistrar,
