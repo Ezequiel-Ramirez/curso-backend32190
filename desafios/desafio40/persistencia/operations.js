@@ -1,21 +1,11 @@
 
 const { option } = require('../options/mysqlconnection.js')
 const { optionLite } = require('../options/myslLiteconnection')
-const ClientSQL = require('./DAO/productosDAO.js')
-const ClientSQLLite = require('./DAO/mensajesDAO.js')
+const ClientSQL = require('./DAO/productosDAOFactory.js')
+const ClientSQLLite = require('./DAO/mensajesDAOFactory.js')
 
-const sql = new ClientSQL(option)
-const sqlLite = new ClientSQLLite(optionLite)
-
-//creo la tabla
-sql.crearTabla().then(() => {
-    console.log('tabla creada')
-})
-
-//creo la tabla mensajes
-sqlLite.crearTabla().then(() => {
-    console.log('tabla mensajes creada')
-})
+const sql = ClientSQL.getDAO()
+const sqlLite = ClientSQLLite.getDAO()
 
 async function listar() {
     return await sql.listarArticulos()

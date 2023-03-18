@@ -6,6 +6,18 @@ class ClientSQLLite{
     constructor(options){
         this.knex = knex(options)
     }
+
+    //mensaje para switch de opciones projects
+    async init() {
+        console.log('Inicializando base de datos sqlLite...')
+        return this.crearTabla()
+    }
+
+    async disconnect() {
+        console.log('Desconectando base de datos sqlLite...')
+        return this.close()
+    }
+
     //creo la tabla mensajes
     async crearTabla(){
         try {

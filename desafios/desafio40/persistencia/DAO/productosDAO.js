@@ -6,6 +6,18 @@ class ClientSQL{
     constructor(options){
         this.knex = knex(options)
     }
+
+    //mensaje para switch de opciones projects
+    init() {
+        console.log('Inicializando base de datos sql...')
+        return this.crearTabla()
+    }
+
+    disconnect() {
+        console.log('Desconectando base de datos sql...')
+        return this.close()
+    }
+    
     //creo la tabla productos
     async crearTabla(){
         try {
