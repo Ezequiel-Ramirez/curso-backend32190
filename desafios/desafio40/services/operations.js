@@ -1,21 +1,21 @@
-const { listar, insertar, listarMensajes, insertarMensaje } = require('../persistencia/operations.js')
+const { listar, insertar, listarMensajes, insertarMensaje, mostrarMensajes } = require('../persistencia/operations.js')
 
 async function getData() {
-    const productos = await listar()
+    const productos = await mostrarMensajes()
     return productos
 }
 
 async function insertData(data) {
-    await insertar(data)
+    await mostrarMensajes(data)
 }
 
 async function getMessages() {
-    const mensajes = await listarMensajes()
+    const mensajes = await mostrarMensajes()
     return mensajes
 }
 
 async function insertMessage(data) {
-    await insertarMensaje(data)
+    await mostrarMensajes(data)
 }
 
 
