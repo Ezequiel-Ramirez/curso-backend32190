@@ -1,0 +1,10 @@
+Conectar a MongoDB Atlas: 
+
+"mongodb+srv://ezequiel:ezequiel@backendcodercurso.y3plhcv.mongodb.net/desafio40B?retryWrites=true&w=majority"
+
+user ezequiel
+
+password ezequiel
+
+//////////////////////////////////////////////////////////////////
+
