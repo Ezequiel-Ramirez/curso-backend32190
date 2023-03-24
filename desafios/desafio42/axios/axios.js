@@ -20,6 +20,7 @@ de estas rutas ejecutar el metodo correspondiente de axios y mostrar en consola 
 */
 
 const url = 'http://localhost:8080/product/'
+const admin = true;
 
 const get = async () => {
   try {
@@ -40,43 +41,55 @@ const getById = async (id) => {
     }
 
 const post = async (data) => {
+    if (admin) {
     try {
         const response = await axios.post(url, data)
         console.log(response.data)
     } catch (error) {
         console.log(error)
     }
+    } else {
+        console.log('No tiene permisos para realizar esta accion')
+    }
     }
 
 const put = async (id, data) => {
+    if (admin) {
     try {
         const response = await axios.put(`${url}${id}`, data)
         console.log(response.data)
     } catch (error) {
         console.log(error)
     }
+    } else {
+        console.log('No tiene permisos para realizar esta accion')
+    }
     }
 
 const del = async (id) => {
+    if (admin) {
     try {
         const response = await axios.delete(`${url}${id}`)
         console.log(response.data)
     } catch (error) {
         console.log(error)
     }
+    } else {
+        console.log('No tiene permisos para realizar esta accion')
+    }
     }
 
 get()
 //getById(1)
-/* post({
-	"title": "producto 4 de prueba",
+post({
+	"title": "producto random de prueba",
 	"price": 300,
 	"description": "producto 4 de prueba",
 	"code":  "252",
 	"image": "imagen.jpg",
-	"stock": 10,
+	"stock": 100,
 	"timestamp": "today"
-}) */
+})
 /* put(1, {
 	"title": "producto 1 de prueba",
 	"price": 100,
@@ -87,3 +100,5 @@ get()
 	"timestamp": "today"
 }) */
 //del(1)
+
+export { get, getById, post, put, del }
