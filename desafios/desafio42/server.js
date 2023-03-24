@@ -6,7 +6,7 @@ import dotenv from "dotenv";
 import cluster from "cluster";
 import compression from "compression";
 import logger from "./logger/logger.js";
-import routes from "./routes/index.js";
+import routes from "./routes/routes.js";
 import numCPUs from "os";
 import mongoConnect from "./services/mongoConnect.js";
 import ioController from "./controllers/ioController.js";
