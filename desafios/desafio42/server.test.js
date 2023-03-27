@@ -3,25 +3,26 @@ import axios from 'axios'
 import { expect } from 'chai'
 import { describe, it } from 'mocha'
 import { get, getById, post, put, del } from './axios/axios.js'
-import supertest from 'supertest'
+import request from 'supertest'
 
-const getAxios = () => axios.get('http://localhost:8080/product/')
+/* const getAxios = () => axios.get('http://localhost:8080/product/')
 const getByIdAxios = id => axios.get(`http://localhost:8080/product/${id}`)
 const postAxios = product => axios.post('http://localhost:8080/product/', product)
 const putAxios = (id, product) => axios.put(`http://localhost:8080/product/${id}`, product)
-const delAxios = id => axios.delete(`http://localhost:8080/product/${id}`)
+const delAxios = id => axios.delete(`http://localhost:8080/product/${id}`) */
 
+const requestSupertest = request('http://localhost:8080')
 
 describe('Test de rutas', () => {
 
     before(async () => { console.log('inicio de test Rutas') })
 
     it('GET /product/', async () => {
-        const response = await getAxios()
+        const response = await requestSupertest.get('/product/')
         expect(response.status).to.equal(200)
     })
     it('GET /product/:id', async () => {
-        const response = await getByIdAxios('641d9a2033b1e56433816dfb')
+        const response = await requestSupertest.get('/product/641d9a2033b1e56433816dfb')
         expect(response.status).to.equal(200)
     })
     it('POST /product/', async () => {
@@ -34,7 +35,7 @@ describe('Test de rutas', () => {
             "stock": 10,
             "timestamp": "today"
         }
-        const response = await postAxios(productTest)
+        const response = await requestSupertest.post('/product/').send(productTest)
         expect(response.status).to.equal(200)
     })
     it('PUT /product/:id', async () => {
@@ -47,13 +48,13 @@ describe('Test de rutas', () => {
             "stock": 10,
             "timestamp": "today"
         }
-        const response = await putAxios('641d9a2033b1e56433816dfb', productTest)
+        const response = await requestSupertest.put('/product/641d9a2033b1e56433816dfb').send(productTest)
         expect(response.status).to.equal(200)
     })
 
     //COMENTADO PARA QUE NO BORRE PERO FUNCIONA OK
     /* it('DELETE /product/:id', async () => {
-        const response = await delAxios('641d9a2033b1e56433816dfb')
+        const response = await requestSupertest.delete('/product/641d9a2033b1e56433816dfb')
         expect(response.status).to.equal(200)
     }) */
 
@@ -65,8 +66,9 @@ describe('Test de producto con title tomate', () => {
         before(async () => { console.log('inicio de test producto con title tomate') })
     
         it('GET /product/', async () => {
-            const response = await getAxios()
-            expect(response.data[2].title).to.equal('tomate')
+            const response = await requestSupertest.get('/product/')
+            expect(response.body[2].title).to.equal('tomate')
+
         })
     
         after(async () => { console.log('fin de test producto con title tomate') })
@@ -77,8 +79,8 @@ describe('Test de producto con price 100', () => {
             before(async () => { console.log('inicio de test producto con price 100') })
         
             it('GET /product/', async () => {
-                const response = await getAxios()
-                expect(response.data[0].price).to.equal(100)
+                const response = await requestSupertest.get('/product/')
+                expect(response.body[0].price).to.equal(100)
             })
         
             after(async () => { console.log('fin de test producto con price 100') })
