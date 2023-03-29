@@ -11,8 +11,9 @@ import numCPUs from "os";
 import mongoConnect from "./services/mongoConnect.js";
 import ioController from "./controllers/ioController.js";
 
-import graphqlProducts from "./controllers/productsGraphql.js";
-
+import graphqlProducts from "./GRAPHQL/productsGraphql.js";
+import graphqlInfo from "./GRAPHQL/infoGraphql.js";
+import controllersGraphql from "./GRAPHQL/controllersGraphql.js";
 
 dotenv.config();
 
@@ -59,7 +60,9 @@ app.use(cookieParser());
 
 app.use(routes);
 //graphql
-app.use("/graphql", graphqlProducts);
+app.use("/graphql", controllersGraphql);
+//app.use("/graphql", graphqlInfo);
+//app.use("/graphql", graphqlProducts);
 
 
 app.set("view engine", "ejs");
@@ -93,6 +96,7 @@ ioController.startChatServer(app, io);
 
 httpServer.listen(PORT, async () => {
   console.log("Servidor escuchando en el puerto " + PORT);
+  console.log("servidor GraphQL activo y puede acceder a http://localhost:8080/graphql");
   try {
     mongoConnect.connect();
   } catch (error) {

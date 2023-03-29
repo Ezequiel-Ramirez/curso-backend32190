@@ -9,7 +9,7 @@ import controllerAuth from "../controllers/requireAuthentication.js";
 import controllerLogin from "../controllers/login.js";
 import controllerLogout from "../controllers/logout.js";
 import controllerRegister from "../controllers/register.js";
-import graphqlProducts from "../controllers/productsGraphql.js";
+import graphqlProducts from "../GRAPHQL/productsGraphql.js";
 
 const router = Router();
 const randoms = Router();
@@ -44,15 +44,15 @@ randoms.get(`/randoms`, controllerRandoms.randomsGet);
 randoms.post(`/randoms`, controllerRandoms.randomsPost);
 
 //products
-/* productos.get("/product/:id?", controllerProducts.get);
+productos.get("/product/:id?", controllerProducts.get);
 productos.post("/product/", controllerProducts.post);
 productos.put("/product/:id", controllerProducts.put);
 productos.delete("/product/:id", controllerProducts.del);
- */
-productos.get("/product/:id?", graphqlProducts);
+
+/* productos.get("/product/:id?", graphqlProducts);
 productos.post("/product/", graphqlProducts);
 productos.put("/product/:id", graphqlProducts);
-productos.delete("/product/:id", graphqlProducts);
+productos.delete("/product/:id", graphqlProducts) */;
 
 
 
@@ -64,8 +64,8 @@ router.use("/", info);
 router.use("/", login);
 router.use("/", logout);
 router.use("/", register);
-//router.use("/", productos);
+router.use("/", productos);
 router.use("/api", randoms);
-router.use("/graphql", productos);
+
 
 export default router;
