@@ -116,7 +116,7 @@ function addMessage() {
 
 //---------------Funcion guardar productos --------------------------//
 // Toma los valores de los imput, los guarda y los envia al servidor //
-/* function addProduct() {
+function addProduct() {
 
   const producto = {
     titulo: document.getElementById("titulo").value,
@@ -126,10 +126,10 @@ function addMessage() {
     foto: document.getElementById("imagen").value,
     stock: parseInt(document.getElementById("stock").value),
   }
-
+console.log(producto)
   socket.emit('new-product', producto)
   return false
-} */
+}
 //--------------------------------------------------------------------//
 
 //--------------funcion para agregar productos al carrito y los guarda y los envia al seridor-----------------//

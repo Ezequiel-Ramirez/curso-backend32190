@@ -1,7 +1,9 @@
 const ContenedorUsuarioMongoDB = require('../containers/containerUsuariosMongoDB')
 const ContenedorProductosMongoDB = require('../containers/containerMensajesMongoDB')
+const ContenedorCarritosMongoDB = require('../containers/containerCarritosMongoDb')
 const usuariosMongoDB = new ContenedorUsuarioMongoDB()
 const productosMongoDB = new ContenedorProductosMongoDB()
+const carritosMongoDB = new ContenedorCarritosMongoDB()
 const dotenv = require('dotenv')
 const { fork } = require('child_process')
 const path = require('path')
@@ -19,8 +21,8 @@ const transporter = nodemailer.createTransport({
     host: 'smtp.ethereal.email',
     port: 587,
     auth: {
-        user: 'susie53@ethereal.email',
-        pass: 'bMFwZuqeU3X4cDPN2v'
+        user: 'hilbert2@ethereal.email',
+        pass: 'vMRjyhCpGWfD6uHK7T'
     }
 });
 //---------------------------------------------------------------//
@@ -142,7 +144,7 @@ const getCarrito = async (req, res) => {
     if (req.session.nombre) {
         let user = await usuarios.find(usuario => usuario.nombre == nombre)
 
-        const productos = await productosMongoDB.getAllProductosByIdUsuario(user.email)
+        const productos = await carritosMongoDB.getAllProductosByIdUsuario(user.email)
         res.render('carrito', {
             user,
             productos
@@ -162,9 +164,9 @@ const deleteProductoCarrito = async (req, res) => {
     if (req.session.nombre) {
 
         let user = await usuarios.find(usuario => usuario.nombre == nombre)
-        const productos = await productosMongoDB.getAllProductosByIdUsuario(user.email)
+        const productos = await carritosMongoDB.getAllProductosByIdUsuario(user.email)
         const producto = await productos.find(producto => producto.codigo == req.params.id)
-        await productosMongoDB.deleteProductoById(producto)
+        await carritosMongoDB.deleteProductoById(producto)
         res.redirect('/carrito')
     } else {
         req.session.destroy()
@@ -179,7 +181,7 @@ const getCheckout = async (req, res) => {
 
     if (req.session.nombre) {
         let user = await usuarios.find(usuario => usuario.nombre == nombre)
-        const productos = await productosMongoDB.getAllProductosByIdUsuario(user.email)
+        const productos = await carritosMongoDB.getAllProductosByIdUsuario(user.email)
         res.render('checkout', {
             user,
             productos
@@ -187,8 +189,8 @@ const getCheckout = async (req, res) => {
 
         //envio de mails
         const mailOptions = {
-            from: 'No-Replay <susie53@ethereal.email>',
-            to: 'Dear Developer <susie53@ethereal.email>', /* user.email en realidad */
+            from: 'No-Replay <hilbert2@ethereal.email>',
+            to: 'Dear Developer <hilbert2@ethereal.email>', /* user.email en realidad */
             subject: `Nuevo pedido de ${user.nombre}, email: ${user.email}`,
             text: `Se ha realizado un nuevo pedido. Los productos comprados son: ${productos.map(producto => producto.titulo).join(', ')}`,
             html: `
@@ -223,7 +225,7 @@ const getCheckout = async (req, res) => {
 
         //elimino los productos del carrito
         for (let i = 0; i < productos.length; i++) {
-            await productosMongoDB.deleteProductoById(productos[i])
+            await carritosMongoDB.deleteProductoById(productos[i])
         }
 
     } else {
