@@ -9,10 +9,8 @@ const schemaProductos = new mongoose.Schema({
     precio: Number,
     foto: String,
     stock: Number,
-    quantity: Number,
-    idUsuario: String,
 })
 
-const models = mongoose.model(collectionProductos, schemaProductos)
+const modelProductos = mongoose.model(collectionProductos, schemaProductos)
 
-module.exports = {models}
+module.exports = {modelProductos}

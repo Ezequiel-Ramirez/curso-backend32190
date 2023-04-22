@@ -1,7 +1,9 @@
 //Class containerMensajesMongoDB.js
 const ContenedorMensajesMongoDB = require('./containers/containerMensajesMongoDB')
 const ContenedorUsuariosMongoDB = require('./containers/containerUsuariosMongoDB')
+const ContenedorProductosMongoDB = require('./containers/containerProductosMongoDB')
 const mensajesMongoDB = new ContenedorMensajesMongoDB()
+const productosMongoDB = new ContenedorProductosMongoDB()
 const usuariosMongoDB = new ContenedorUsuariosMongoDB()
 const { modelU } = require('./models/usuarios')
 
@@ -126,19 +128,18 @@ io.on("connection", async (socket) => {
             logger.error(`Error en la api de mensajes, faltan campos`)
         }
     })
-
-    let productos = await mensajesMongoDB.getAllProductos()
-
-
+    
+/* -----------------------------------productos-------------------------------------------- */
+    let productos = await productosMongoDB.getAllProductos()
     socket.emit('productos', productos)
 
     socket.on('new-product', async (data) => {
         let todosProductos = data
 
-        if (data.titulo && data.descripcion && data.codigo && data.precio && data.foto && data.stock && data.quantity && data.idUsuario) {
-            await mensajesMongoDB.saveProductos(todosProductos)
+        if (data.titulo && data.descripcion && data.codigo && data.precio && data.foto && data.stock) {
+            await productosMongoDB.saveProductos(todosProductos)
 
-            const productos = await mensajesMongoDB.getAllProductos()
+            const productos = await productosMongoDB.getAllProductos()
 
             io.sockets.emit('productos', productos)
         }

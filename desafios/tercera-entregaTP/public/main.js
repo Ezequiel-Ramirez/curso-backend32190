@@ -79,7 +79,7 @@ socket.on('productos', produc => {
     }).join(" ")
 
     html = `
-    <h1 style="color:crimson; text-align: center"> HISTORIAL</h1>
+    <h1 style="color:crimson; text-align: center">Productos desde form</h1>
       <table class="table table-dark">
         <tr style="color: yellow;"><th>titulo</th> <th>Descripcion</th> <th>Codigo</th> <th>Precio</th> <th>Imagen</th> <th>Stock</th></tr>
         ${html2}    
@@ -126,7 +126,7 @@ function addProduct() {
     foto: document.getElementById("imagen").value,
     stock: parseInt(document.getElementById("stock").value),
   }
-console.log(producto)
+
   socket.emit('new-product', producto)
   return false
 }
