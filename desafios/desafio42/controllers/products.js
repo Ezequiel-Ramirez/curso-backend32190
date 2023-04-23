@@ -3,7 +3,7 @@ const productosRepo = new ProductosRepository();
 
 const admin = true;
 
-// GET api/productos
+// GET /productos
 const get = async (req, res) => {
     const { id } = req.params;
     if (id) {
@@ -18,7 +18,23 @@ const get = async (req, res) => {
     }
 };
 
-// POST api/productos
+// GET /productos/:categoria
+const getByCategory = async (req, res) => {
+    const { categoria } = req.params;
+    //obtengo todos los productos y los filtro por categoria
+    const products = await productosRepo.getAll();
+    const productsByCategory = products.filter(
+        (product) => product.category === categoria
+    );
+    
+    productsByCategory.length > 0
+        ? res.status(200).json(productsByCategory)
+        : res.status(400).json({ error: "categoria no encontrada" });
+        
+    
+};
+
+// POST /productos
 const post = async (req, res, next) => {
     if (admin) {
         const { body } = req;
@@ -40,7 +56,7 @@ const post = async (req, res, next) => {
     }
 };
 
-// PUT api/productos/:id
+// PUT /productos/:id
 const put = async (req, res, next) => {
     if (admin) {
         const { id } = req.params;
@@ -59,7 +75,7 @@ const put = async (req, res, next) => {
     }
 };
 
-// DELETE /api/productos/:id
+// DELETE /productos/:id
 const del = async (req, res, next) => {
     if (admin) {
         const { id } = req.params;
@@ -76,4 +92,4 @@ const del = async (req, res, next) => {
     }
 };
 
-export default { get, post, put, del };
+export default { get, post, put, del, getByCategory };

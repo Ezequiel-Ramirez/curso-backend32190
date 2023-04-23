@@ -6,6 +6,7 @@ export default class ProductoRepo {
   #image;
   #stock;
   #timestamp;
+  #category;
 
   constructor(producto) {
     this.#title = producto.title;
@@ -15,6 +16,7 @@ export default class ProductoRepo {
     this.#image = producto.image;
     this.#stock = producto.stock;
     this.#timestamp = producto.timestamp;
+    this.#category = producto.category;
   }
 
   get title() {
@@ -86,6 +88,17 @@ export default class ProductoRepo {
     if (!timestamp) throw new Error('"timestamp" es un campo requerido');
     this.#timestamp = timestamp;
   }
+  
+  get category() {
+    return this.#category;
+  }
+  
+  set category(category) {
+    console.log(category);
+    if (!category) throw new Error('"category" es un campo requerido');
+    this.#category = category;
+  }
+  
 
   datos() {
     return JSON.parse(
@@ -97,6 +110,7 @@ export default class ProductoRepo {
         image: this.#image,
         stock: this.#stock,
         timestamp: this.#timestamp,
+        category: this.#category,
       })
     );
   }

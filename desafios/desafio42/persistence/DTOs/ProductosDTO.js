@@ -7,6 +7,7 @@ export default class ProductoDTO {
     this.image = producto.image;
     this.stock = producto.stock;
     this.timestamp = producto.timestamp;
+    this.category = producto.category;
   }
 }
 

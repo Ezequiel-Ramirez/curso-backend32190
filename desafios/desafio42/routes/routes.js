@@ -18,6 +18,7 @@ const login = Router();
 const logout = Router();
 const register = Router();
 const productos = Router();
+const carrito = Router();
 
 //register
 register.get("/register", controllerRegister.register);
@@ -43,10 +44,16 @@ randoms.get(`/randoms`, controllerRandoms.randomsGet);
 randoms.post(`/randoms`, controllerRandoms.randomsPost);
 
 //products
-productos.get("/product/:id?", controllerProducts.get);
-productos.post("/product/", controllerProducts.post);
-productos.put("/product/:id", controllerProducts.put);
-productos.delete("/product/:id", controllerProducts.del);
+productos.get("/productos/:id?", controllerProducts.get);
+productos.post("/productos/", controllerProducts.post);
+productos.put("/productos/:id", controllerProducts.put);
+productos.delete("/productos/:id", controllerProducts.del);
+productos.get("/productos/categoria/:categoria", controllerProducts.getByCategory);
+
+//carrito
+/* carrito.get("/carrito/:id?", controllerProducts.carritoGet);
+carrito.post("/carrito/:id", controllerProducts.carritoPost);
+carrito.delete("/carrito/:id", controllerProducts.carritoDelete); */
 
 
 

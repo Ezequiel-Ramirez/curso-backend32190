@@ -10,6 +10,7 @@ const productoSchema = new Schema({
   image: { type: String },
   stock: { type: Number },
   timestamp: { type: String },
+  category: { type: String },
 });
 
 export const productos = mongoose.model("Producto", productoSchema);
