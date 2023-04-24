@@ -3,6 +3,7 @@ import authRouter from "./midlewares/auth.js";
 import controller from "../controllers/index.js";
 import controllerRandoms from "../controllers/randoms.js";
 import controllerProducts from "../controllers/products.js";
+import controllerCarrito from "../controllers/carrito.js";
 import controllerInfo from "../controllers/info.js";
 import controllerDatos from "../controllers/datos.js";
 import controllerAuth from "../controllers/requireAuthentication.js";
@@ -51,9 +52,9 @@ productos.delete("/productos/:id", controllerProducts.del);
 productos.get("/productos/categoria/:categoria", controllerProducts.getByCategory);
 
 //carrito
-/* carrito.get("/carrito/:id?", controllerProducts.carritoGet);
-carrito.post("/carrito/:id", controllerProducts.carritoPost);
-carrito.delete("/carrito/:id", controllerProducts.carritoDelete); */
+carrito.get("/carrito/:id?", controllerCarrito.get);
+carrito.post("/carrito/:id", controllerCarrito.post);
+carrito.delete("/carrito/:id", controllerCarrito.del);
 
 
 
@@ -66,6 +67,7 @@ router.use("/", login);
 router.use("/", logout);
 router.use("/", register);
 router.use("/", productos);
+router.use("/", carrito);
 router.use("/api", randoms);
 
 export default router;

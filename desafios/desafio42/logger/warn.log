@@ -12,3 +12,6 @@
 [2023-04-23T18:34:26.430] [WARN] warnArchive - Estado: 404, Ruta consultada: /, Metodo POST
 [2023-04-23T18:44:47.033] [WARN] warnArchive - Estado: 404, Ruta consultada: /productos, Metodo GET
 [2023-04-23T18:46:40.298] [WARN] warnArchive - Estado: 404, Ruta consultada: /productos, Metodo GET
+[2023-04-23T19:56:32.928] [WARN] warnArchive - Estado: 404, Ruta consultada: /carrito, Metodo GET
+[2023-04-23T19:58:07.860] [WARN] warnArchive - Estado: 404, Ruta consultada: /carrito, Metodo POST
+[2023-04-24T13:13:08.040] [WARN] warnArchive - Estado: 404, Ruta consultada: /carrito/, Metodo GET
