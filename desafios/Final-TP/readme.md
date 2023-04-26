@@ -55,7 +55,7 @@ const schemaProductos = new mongoose.Schema({
   stock: Number,
 });
 ```
-A continuación se muestra el modelo utilizado para la colección "carrito" en MongoDB.
+A continuación se muestra el modelo utilizado para la colección "carritos" en MongoDB.
 ```javascript
 const carritoCollection = "carritos";
 const carritoSchema = new mongoose.Schema({
@@ -104,4 +104,39 @@ const schemaUsuarios = new mongoose.Schema({
     avatar: String,
 })
 ```
+
+## Rutas
+
+A continuación se muestra la lista de rutas utilizadas en este proyecto.
+
+| Ruta                  | Método   | Descripción |
+|-----------------------|----------|-------------|
+| /                     | GET      | Ruta inicial de la aplicación. |
+| /register             | GET      | Ruta para registrar un usuario. |
+| /register             | POST     | Ruta para registrar un usuario. |
+| /failregister         | GET      | Ruta para mostrar un mensaje de error al registrar un usuario. |
+| /login                | GET      | Ruta para loguear un usuario. |
+| /login                | POST     | Ruta para loguear un usuario. |
+| /faillogin            | GET      | Ruta para mostrar un mensaje de error al loguear un usuario. |
+| /logout               | GET      | Ruta para desloguear un usuario. |
+| /datos                | GET      | Ruta para mostrar los datos de un usuario y productos iniciales. |
+| /api/productos        | GET      | Devuelve un listado de productos. |
+| /api/producto         | GET      | Devuelve un producto por su id. |
+| /api/productos        | POST     | Crea un nuevo producto. |
+| /api/productos        | PUT      | Actualiza un producto por su id. |
+| /api/productos        | DELETE   | Elimina un producto por su id. |
+| /carrito              | GET      | Devuelve un listado de productos del carrito. |
+| /carritos             | GET      | Devuelve un listado de carritos. |
+| /carritoss            | GET      | Devuelve un carrito por su id. |
+| /carrito/producto     | GET      | Traer todos los productos del carrito. |
+| /carrito/             | POST     | Agregar un producto al carrito. |
+| /carrito/producto     | DELETE   | Eliminar un producto del carrito. |
+| /carrito              | DELETE   | Eliminar carrito. |
+| /carrito/comprar      | POST     | Comprar productos del carrito. |
+| /api/mensajeria       | GET      | Devuelve un listado de mensajes. |
+| /info                 | GET      | Devuelve info de variables. |
+| /infoBloq             | GET      | Devuelve info de variables. |
+| /api/random/:cant     | GET      | Devuelve un listado de numeros aleatorios. |
+| *                     | GET      | Ruta para mostrar un mensaje de error al ingresar una ruta incorrecta. |
+
 
