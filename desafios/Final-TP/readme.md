@@ -46,7 +46,6 @@ A continuación se muestra el modelo utilizado para la colección "productos" en
 
 ```javascript
 const collectionProductos = "productos";
-
 const schemaProductos = new mongoose.Schema({
   titulo: String,
   descripcion: String,
@@ -55,8 +54,54 @@ const schemaProductos = new mongoose.Schema({
   foto: String,
   stock: Number,
 });
-
-const Productos = mongoose.model(collectionProductos, schemaProductos);
-
-module.exports = Productos;
 ```
+A continuación se muestra el modelo utilizado para la colección "carrito" en MongoDB.
+```javascript
+const carritoCollection = "carritos";
+const carritoSchema = new mongoose.Schema({
+  productos:[
+    {
+      titulo: { type: String, require: true },
+      descripcion: { type: String, require: true },
+      codigo: { type: Number, require: true },
+      precio: { type: Number, require: true },
+      foto: { type: String, require: true },
+      stock:{ type: Number, require: true },
+      id: { type: Number},
+      timestamp: { type: Date, required: true},
+    }
+  ],
+  timestamp: { type: Date, required: true}
+});
+```
+A continuación se muestra el modelo utilizado para la colección "mensajes" en MongoDB.
+```javascript
+const collectionMensajes = "mensajes";
+const mensajeSchema = new mongoose.Schema({   
+    author: {        
+        email: { type: String, require: true },
+        nombre: { type: String, required: true },
+        apellido: { type: String, required: true },
+        edad: { type:String, required: true },
+        alias: { type: String, required: true },
+        avatar: { type: String, required: true }
+    },
+    text: { type: String, required: true },
+    timestamp: { type: Date, required: true},
+    id: { type: Number, required: true },
+});
+```
+A continuación se muestra el modelo utilizado para la colección "usuarios" en MongoDB.
+```javascript
+const collectionUsuarios = 'usuarios'
+const schemaUsuarios = new mongoose.Schema({
+    nombre: String,
+    password: String,
+    direccion: String,
+    edad: Number,
+    telefono: Number,
+    email: String,
+    avatar: String,
+})
+```
+
