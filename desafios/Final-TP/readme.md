@@ -140,3 +140,28 @@ A continuación se muestra la lista de rutas utilizadas en este proyecto.
 | *                     | GET      | Ruta para mostrar un mensaje de error al ingresar una ruta incorrecta. |
 
 
+## Ejecución
+
+Para ejecutar este proyecto, ejecute los siguientes comandos:
+
+```bash
+  npm install
+  npm start
+```
+
+## Flujo de la aplicación
+
+1. El usuario inicia la aplicación e ingresa a la página de inicio.
+2. El usuario tiene dos opciones: iniciar sesión o registrarse.
+3. Si el usuario ya tiene una cuenta, puede hacer clic en el botón "Iniciar sesión" y ser redirigido a la página de inicio de sesión.
+4. En la página de inicio de sesión, el usuario debe ingresar su nombre de usuario y contraseña y hacer clic en el botón "Iniciar sesión".
+5. Si el nombre de usuario y la contraseña son correctos, el usuario será autenticado y redirigido a la página de productos.
+6. En la ruta de productos, el usuario puede ver una lista de todos los productos disponibles para comprar.
+7. Si el usuario desea agregar un producto al carrito, puede hacer uso de la ruta de carrito.
+8. Si el usuario desea ver su carrito de compras, puede hacer uso de la ruta de carrito por su id.
+9. En la ruta carrito por su id, el usuario puede ver una lista de todos los productos que ha agregado al carrito y su cantidad.
+10. Si el usuario desea eliminar un producto del carrito, puede hacer uso de la ruta de carrito por su id y eliminar el producto.
+11. Si el usuario aún no tiene una cuenta, puede hacer uso de la ruta de registro.
+12. En la ruta de registro, el usuario debe ingresar su información de registro, incluyendo su nombre, dirección de correo electrónico y contraseña.
+13. Si la información de registro es válida, se creará una nueva cuenta de usuario y el usuario será redirigido a la página de inicio de sesión.
+
